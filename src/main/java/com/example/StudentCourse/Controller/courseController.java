@@ -6,6 +6,8 @@ import com.example.StudentCourse.service.lmpl.courseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/course")
 public class courseController {
@@ -21,4 +23,8 @@ public class courseController {
         return courseservice.getCourse(id);
     }
 
+    @PostMapping("/getallcourse")
+    public List<course> getallCourse(){
+        return courseservice.getallCourse();
+    }
 }
