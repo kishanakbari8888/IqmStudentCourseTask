@@ -1,5 +1,6 @@
 package com.example.StudentCourse.service.lmpl;
 
+//import com.example.StudentCourse.Repository.studentRepository;
 import com.example.StudentCourse.Repository.studentRepository;
 import com.example.StudentCourse.entities.student;
 import com.example.StudentCourse.service.studentService;
@@ -41,4 +42,5 @@ public class studentServiceImpl implements studentService {
     public List<student> getallStudent() {
         return studentrepository.findAll();
     }
+
 }

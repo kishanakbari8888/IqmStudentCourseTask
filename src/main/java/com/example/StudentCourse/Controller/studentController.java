@@ -35,4 +35,11 @@ public class studentController {
         return studentseservice.updateStudent(studentDetail);
     }
 
+//    @GetMapping("/getallcoursebystudentid/{id}")
+//    public List<Object[]> getAllCourseByStudentId(@PathVariable("id") String id){
+//        return studentseservice.getallCoursebyStudentId(id);
+//    }
+
+
+
 }
