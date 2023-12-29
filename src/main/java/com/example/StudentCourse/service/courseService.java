@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface courseService {
     public String createCourse(course coursedetail);
-    public String updateCourse();
+    public String updateCourse(course coursedetail);
     public String deleteCourse(String courseId);
     public course getCourse(String courseId);
     public List<course> getallCourse();

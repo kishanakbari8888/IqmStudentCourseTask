@@ -21,13 +21,15 @@ public class courseServiceImpl implements courseService {
     }
 
     @Override
-    public String updateCourse() {
-        return null;
+    public String updateCourse(course coursedetail) {
+        courserepository.save(coursedetail);
+        return "success";
     }
 
     @Override
     public String deleteCourse(String courseId) {
-        return null;
+        courserepository.deleteById(courseId);
+        return "success";
     }
 
     @Override

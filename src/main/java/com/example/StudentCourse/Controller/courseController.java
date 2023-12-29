@@ -11,20 +11,29 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/course")
 public class courseController {
-
     @Autowired
     private courseService courseservice;
     @PostMapping("/create")
     public String createCourse(@RequestBody course courseDetail){
         return courseservice.createCourse(courseDetail);
     }
-    @PostMapping("/{id}")
+    @GetMapping("/get/{id}")
     public course getbyId(@PathVariable("id") String id){
         return courseservice.getCourse(id);
     }
 
-    @PostMapping("/getallcourse")
+    @GetMapping("/getallcourse")
     public List<course> getallCourse(){
         return courseservice.getallCourse();
     }
+
+    @DeleteMapping("/delete/{id}")
+    public String deleteCourse(@PathVariable("id") String id ){
+        return courseservice.deleteCourse(id);
+    }
+    @PutMapping("/update")
+    public String updateCourse(@RequestBody course courseDetail ){
+        return courseservice.updateCourse(courseDetail);
+    }
+
 }
