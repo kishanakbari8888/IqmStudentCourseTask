@@ -1,6 +1,8 @@
 package com.example.StudentCourse;
 
 import lombok.extern.java.Log;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,16 +11,15 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.List;
 import java.util.Map;
 
+import com.example.StudentCourse.doa.CourseDao;
+import com.example.StudentCourse.entities.Course;
+
 @SpringBootApplication
 @Log
 public class StudentCourseApplication implements CommandLineRunner {
 
-	private JdbcTemplate jdbcTemplate;
-
-	public StudentCourseApplication(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
-	}
-
+	@Autowired
+	CourseDao courseDao;
 	public static void main(String[] args) {
 		SpringApplication.run(StudentCourseApplication.class, args);
 	}
@@ -26,10 +27,10 @@ public class StudentCourseApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-//		String sql = "INSERT INTO studentCourse (studentId, courseId) VALUES (?,?)";
+//		String sql = "select * from employee";
 //		String studentId = "45455";
 //		String courseId = "787";
-//
+
 //		jdbcTemplate.update(sql,studentId,courseId);
 //
 ////		String sql = "CREATE TABLE IF NOT EXISTS studentCourse (studentId VARCHAR(255),courseId VARCHAR(255), CONSTRAINT PK_Person PRIMARY KEY (studentId,courseId))";
@@ -50,7 +51,13 @@ public class StudentCourseApplication implements CommandLineRunner {
 //			log.info("Student ID: " + id);
 //			log.info("Student ID: " + title);
 //
-//
 //		}
+
+//		Course course = new Course("CSE302","hello","hello");
+//
+//		courseDao.insertStudent(course);
+//		log.info("Done");
+
+
 	}
 }

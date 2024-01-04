@@ -1,7 +1,7 @@
 package com.example.StudentCourse.service.lmpl;
 
 //import com.example.StudentCourse.Repository.studentRepository;
-import com.example.StudentCourse.Repository.StudentRepository;
+import com.example.StudentCourse.repository.StudentRepository;
 import com.example.StudentCourse.entities.Student;
 import com.example.StudentCourse.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;

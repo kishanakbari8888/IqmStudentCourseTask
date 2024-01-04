@@ -1,4 +1,4 @@
-package com.example.StudentCourse.Controller;
+package com.example.StudentCourse.controller;
 
 import com.example.StudentCourse.entities.Student;
 import com.example.StudentCourse.service.StudentService;

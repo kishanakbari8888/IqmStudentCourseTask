@@ -1,4 +1,4 @@
-package com.example.StudentCourse.Repository;
+package com.example.StudentCourse.repository;
 
 import com.example.StudentCourse.entities.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
