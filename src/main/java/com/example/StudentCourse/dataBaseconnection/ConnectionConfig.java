@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ConnectionConfig {
-    private static final String DB_URL = "jdbc:postgresql://pg-1b9c0aloud.com:18137/defaultdb";
+    private static final String DB_URL = "jdbc:postgresql://pg-loud.com:18137/defaultdb";
     private static final String DB_USER = "";
     private static final String DB_PASSWORD = "";
 

@@ -17,8 +17,12 @@ import com.example.StudentCourse.entities.Course;
 @Service
 public class CourseDao {
 
-    @Autowired
-    private Connection connection;
+    private final Connection connection;
+
+    public CourseDao(Connection connection) {
+        this.connection = connection;
+    }
+
     public void save(Course course) throws SQLException {
         String id = course.getId();
         String title = course.getTitle();
