@@ -1,27 +1,27 @@
 package com.example.StudentCourse.service.lmpl;
 
-import com.example.StudentCourse.Repository.courseRepository;
-import com.example.StudentCourse.entities.course;
-import com.example.StudentCourse.service.courseService;
+import com.example.StudentCourse.Repository.CourseRepository;
+import com.example.StudentCourse.entities.Course;
+import com.example.StudentCourse.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class courseServiceImpl implements courseService {
+public class CourseServiceImpl implements CourseService {
 
     @Autowired
-    private courseRepository courserepository;
+    private CourseRepository courserepository;
 
     @Override
-    public String createCourse(course coursedetail) {
+    public String createCourse(Course coursedetail) {
         courserepository.save(coursedetail);
         return "Success";
     }
 
     @Override
-    public String updateCourse(course coursedetail) {
+    public String updateCourse(Course coursedetail) {
         courserepository.save(coursedetail);
         return "success";
     }
@@ -33,13 +33,13 @@ public class courseServiceImpl implements courseService {
     }
 
     @Override
-    public course getCourse(String courseId) {
+    public Course getCourse(String courseId) {
 
         return courserepository.findById(courseId).get() ;
     }
 
     @Override
-    public List<course> getallCourse() {
+    public List<Course> getallCourse() {
 
         return courserepository.findAll();
     }

@@ -3,20 +3,19 @@ package com.example.StudentCourse.Controller;
 //import com.example.StudentCourse.entities.studentCourseEnrollment;
 //import com.example.StudentCourse.service.studentCourseService;
 import com.example.StudentCourse.entities.StudentCourse;
-import com.example.StudentCourse.entities.course;
-import com.example.StudentCourse.service.lmpl.studentCourseServiceImpl;
+import com.example.StudentCourse.entities.Course;
+import com.example.StudentCourse.service.lmpl.StudentCourseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/studentcourse")
-public class studentCourseController {
+public class StudentCourseController {
 
     @Autowired
-    private studentCourseServiceImpl studentcourseserviceImpl;
+    private StudentCourseServiceImpl studentcourseserviceImpl;
 
     @PostMapping("/add")
     public String addStudentToCourse(@RequestBody StudentCourse studentcourse){
@@ -25,7 +24,7 @@ public class studentCourseController {
     }
 
     @GetMapping("/{id}")
-    public List<course> getAllCourseById(@PathVariable("id") String id){
+    public List<Course> getAllCourseById(@PathVariable("id") String id){
 
         return studentcourseserviceImpl.getAllCourseByStudentId(id);
     }
