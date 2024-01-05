@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.StudentCourse.entities.Course;
 
+/**
+ * this class handle database query execution for course table
+ */
 @Repository
 public class CourseDao {
 
@@ -39,7 +42,6 @@ public class CourseDao {
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            // Handle exceptions
             throw e;
         }
     }
@@ -62,7 +64,6 @@ public class CourseDao {
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            // Handle exceptions
             throw e;
         }
     }
@@ -76,7 +77,6 @@ public class CourseDao {
             preparedStatement.setString(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            // Handle exceptions
             throw e;
         }
 
@@ -99,7 +99,6 @@ public class CourseDao {
                 }
             }
         } catch (SQLException e) {
-            // Handle exceptions
             e.printStackTrace();
         }
         return course;
@@ -124,7 +123,6 @@ public class CourseDao {
                 }
 
         } catch (SQLException e) {
-            // Handle exceptions
             throw e;
         }
         return courseList;

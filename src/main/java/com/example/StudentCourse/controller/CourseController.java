@@ -14,34 +14,56 @@ import java.util.List;
 public class CourseController {
     @Autowired
     private CourseService courseservice;
+
+    /**
+     * POST request for inserting course detail in database
+     * @param courseDetail
+     * @return
+     * @throws SQLException
+     */
     @PostMapping("/create")
     public String createCourse(@RequestBody Course courseDetail) throws SQLException {
         return courseservice.createCourse(courseDetail);
     }
+
+    /**
+     * GET Request for getting course details by id
+     * @param id
+     * @return
+     * @throws SQLException
+     */
     @GetMapping("/get/{id}")
     public Course getbyId(@PathVariable("id") String id) throws SQLException {
-        try {
-            return courseservice.getCourse(id);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return courseservice.getCourse(id);
     }
 
+    /**
+     * GET Request for getting all course details
+     * @return
+     * @throws SQLException
+     */
     @GetMapping("/getallcourse")
     public List<Course> getallCourse() throws SQLException {
-
-        try {
             return courseservice.getallCourse();
-        }catch(SQLException e){
-            return null;
-//            throw e;
-        }
     }
 
+    /**
+     * DELETE Request for deleting course by id
+     * @param id
+     * @return
+     * @throws SQLException
+     */
     @DeleteMapping("/delete/{id}")
     public String deleteCourse(@PathVariable("id") String id ) throws SQLException {
         return courseservice.deleteCourse(id);
     }
+
+    /**
+     * PUT Request for updating course details
+     * @param courseDetail
+     * @return
+     * @throws SQLException
+     */
     @PutMapping("/update")
     public String updateCourse(@RequestBody Course courseDetail ) throws SQLException {
         return courseservice.updateCourse(courseDetail);

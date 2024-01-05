@@ -22,40 +22,8 @@ public class StudentCourseApplication implements CommandLineRunner {
 		SpringApplication.run(StudentCourseApplication.class, args);
 	}
 
-
 	@Override
 	public void run(String... args) throws Exception {
-//		String sql = "select * from employee";
-//		String studentId = "45455";
-//		String courseId = "787";
-
-//		jdbcTemplate.update(sql,studentId,courseId);
-//
-////		String sql = "CREATE TABLE IF NOT EXISTS studentCourse (studentId VARCHAR(255),courseId VARCHAR(255), CONSTRAINT PK_Person PRIMARY KEY (studentId,courseId))";
-//
-////		jdbcTemplate.execute(sql);
-//
-
-
-
-//		String sql = "SELECT *FROM studentCourse";
-//		List<Map<String, Object>> M = jdbcTemplate.queryForList(sql);
-//		for (Map<String, Object> courseMap : M) {
-//			String id = (String) courseMap.get("studentId");
-//			String title = (String) courseMap.get("CourseId");
-////			String description = (String) courseMap.get("description");
-//
-//			// Print details of each student
-//			log.info("Student ID: " + id);
-//			log.info("Student ID: " + title);
-//
-//		}
-
-//		Course course = new Course("CSE302","hello","hello");
-//
-//		courseDao.insertStudent(course);
-//		log.info("Done");
-
-
+		log.info("Application Running");
 	}
 }

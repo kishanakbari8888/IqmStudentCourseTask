@@ -15,6 +15,10 @@ import org.springframework.stereotype.Repository;
 import com.example.StudentCourse.entities.Course;
 import com.example.StudentCourse.entities.StudentCourse;
 
+
+/**
+ * this class handle database query execution for student_course table
+ */
 @Repository
 public class StudentCourseDao {
 
@@ -63,7 +67,6 @@ public class StudentCourseDao {
             }
 
         } catch (SQLException e) {
-            // Handle exceptions
             throw e;
         }
         return courseList;

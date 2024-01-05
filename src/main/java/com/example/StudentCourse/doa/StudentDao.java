@@ -8,13 +8,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
-import com.example.StudentCourse.entities.Course;
 import com.example.StudentCourse.entities.Student;
 
+/**
+ * this class handle database query execution for student table
+ */
 @Repository
 public class StudentDao {
 
@@ -40,7 +40,6 @@ public class StudentDao {
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            // Handle exceptions
             throw e;
         }
     }
@@ -64,7 +63,6 @@ public class StudentDao {
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            // Handle exceptions
             throw e;
         }
     }
@@ -78,7 +76,6 @@ public class StudentDao {
             preparedStatement.setString(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            // Handle exceptions
             throw e;
         }
 
@@ -101,7 +98,6 @@ public class StudentDao {
                 }
             }
         } catch (SQLException e) {
-            // Handle exceptions
             e.printStackTrace();
         }
         return student;
@@ -126,7 +122,6 @@ public class StudentDao {
             }
 
         } catch (SQLException e) {
-            // Handle exceptions
             throw e;
         }
         return studentList;
