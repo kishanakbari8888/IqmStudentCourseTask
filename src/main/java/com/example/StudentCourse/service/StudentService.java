@@ -12,3 +12,4 @@ public interface StudentService {
     public Student getStudent(String studentId) throws SQLException;
     public List<Student> getallStudent() throws SQLException;
 }
+

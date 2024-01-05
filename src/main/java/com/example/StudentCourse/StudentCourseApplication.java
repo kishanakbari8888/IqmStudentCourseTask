@@ -18,8 +18,6 @@ import com.example.StudentCourse.entities.Course;
 @Log
 public class StudentCourseApplication implements CommandLineRunner {
 
-	@Autowired
-	CourseDao courseDao;
 	public static void main(String[] args) {
 		SpringApplication.run(StudentCourseApplication.class, args);
 	}
