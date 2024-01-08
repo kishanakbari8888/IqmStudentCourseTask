@@ -10,6 +10,6 @@ public interface StudentService {
     public String updateStudent(Student studentdetail) throws SQLException;
     public String deleteStudent(String studentId) throws SQLException;
     public Student getStudent(String studentId) throws SQLException;
-    public List<Student> getallStudent(Long pageNo, Long size, String field,String patten) throws SQLException;
+    public List<Student> getallStudent() throws SQLException;
 }
 

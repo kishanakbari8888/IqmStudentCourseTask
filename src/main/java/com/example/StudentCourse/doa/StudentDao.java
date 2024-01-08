@@ -105,38 +105,14 @@ public class StudentDao {
 
     }
 
-    public List<Student> findAll(Long pageNo, Long size, String field,String patten) throws SQLException{
-        Long offSet = 0L;
-        offSet = pageNo*size;
+    public List<Student> findAll() throws SQLException{
 
-        String sql = "SELECT * FROM student_info ORDER BY ? LIMIT ? OFFSET ?";
-
-        if(patten!=null){
-            sql = "SELECT * FROM student_info WHERE id LIKE ? OR mobile_no LIKE ? OR description LIKE ? ORDER BY ? LIMIT ? OFFSET ?";
-        }
-
+        String sql = "SELECT * FROM student_info;";
         List<Student> studentList = new ArrayList<>();
 
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-            if(patten==null){
-                preparedStatement.setString(1,field);
-                preparedStatement.setLong(2,size);
-                preparedStatement.setLong(3,offSet);
-            }
-            else{
-
-                patten = "%"+patten+"%";
-                preparedStatement.setString(1,patten);
-                preparedStatement.setString(2,patten);
-                preparedStatement.setString(3,patten);
-                preparedStatement.setString(4,field);
-                preparedStatement.setLong(5,size);
-                preparedStatement.setLong(6,offSet);
-            }
-
-            ResultSet resultSet = preparedStatement.executeQuery();
+            Statement preparedStatement = connection.createStatement();
+            ResultSet resultSet = preparedStatement.executeQuery(sql);
             while(resultSet.next()) {
                 Student student = new Student();
                 student.setId(resultSet.getString("id"));
