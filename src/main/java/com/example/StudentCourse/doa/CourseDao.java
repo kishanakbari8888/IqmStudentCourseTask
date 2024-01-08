@@ -104,40 +104,37 @@ public class CourseDao {
 
     public List<Course> findAll(Long pageNo,Long size,String field,String patten) throws SQLException{
         Long offSet = 0L;
-        offSet = pageNo*size;
+        Long limit = 0L;
+        String sql;
 
-        String sql = "SELECT * FROM course_info ORDER BY ? LIMIT ? OFFSET ?";
+        if(pageNo!=Long.MAX_VALUE){
+            offSet = (pageNo)*size;
+            limit = size;
+        }
+        else{
+            limit = pageNo;
+        }
+
+        sql = "SELECT * FROM course_info ORDER BY ? LIMIT ? OFFSET ?";
 
         if(patten!=null){
-            sql = "SELECT * FROM course_info WHERE id LIKE ? OR title LIKE ? OR description LIKE ? ORDER BY ? LIMIT ? OFFSET ?";
+            sql = "SELECT * FROM course_info WHERE id LIKE "+ "\'%" +patten+"%\'" +" OR title LIKE "+ "\'%" +patten+"%\'" +" OR description LIKE "+ "\'%" +patten+"%\'" +" ORDER BY ? LIMIT ? OFFSET ?";
         }
         List<Course> courseList = new ArrayList<>();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            if(patten==null){
-                preparedStatement.setString(1,field);
-                preparedStatement.setLong(2,size);
-                preparedStatement.setLong(3,offSet);
-            }
-            else{
-                patten = "%"+patten+"%";
-                preparedStatement.setString(1,patten);
-                preparedStatement.setString(2,patten);
-                preparedStatement.setString(3,patten);
-                preparedStatement.setString(4,field);
-                preparedStatement.setLong(5,size);
-                preparedStatement.setLong(6,offSet);
-            }
-
+            preparedStatement.setString(1,field);
+            preparedStatement.setLong(2,limit);
+            preparedStatement.setLong(3,offSet);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()) {
-                Course course = new Course();
-                course.setId(resultSet.getString("id"));
-                course.setTitle(resultSet.getString("title"));
-                course.setDescription(resultSet.getString("description"));
-                courseList.add(course);
-            }
+                while(resultSet.next()) {
+                    Course course = new Course();
+                    course.setId(resultSet.getString("id"));
+                    course.setTitle(resultSet.getString("title"));
+                    course.setDescription(resultSet.getString("description"));
+                    courseList.add(course);
+                }
 
         } catch (SQLException e) {
             throw e;
