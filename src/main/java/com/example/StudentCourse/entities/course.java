@@ -6,15 +6,15 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "course_info")
-public class Course {
+public class course {
     @Id
     private String id;
     private String title;
     private String description;
 
-    public Course() {
+    public course() {
     }
-    public Course(String id, String title, String description) {
+    public course(String id, String title, String description) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -44,4 +44,12 @@ public class Course {
         this.description = description;
     }
 
+    @Override
+    public String toString() {
+        return "course{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }
