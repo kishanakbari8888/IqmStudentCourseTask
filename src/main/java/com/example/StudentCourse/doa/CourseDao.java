@@ -103,24 +103,16 @@ public class CourseDao {
     }
 
     public List<Course> findAll(Long pageNo,Long size,String field,String patten) throws SQLException{
-        long offSet = 0L;
-        long limit = 0L;
+        Long offSet = 0L;
+        Long limit = 0L;
         String sql;
 
-        if(field==null){
-            field = "id";
-        }
-
-        if(size==null) {
-            size = 20L;
-        }
-
-        if(pageNo==null){
-            limit = Long.MAX_VALUE;
-        }
-        else{
+        if(pageNo!=Long.MAX_VALUE){
             offSet = (pageNo)*size;
             limit = size;
+        }
+        else{
+            limit = pageNo;
         }
 
         sql = "SELECT * FROM course_info ORDER BY ? LIMIT ? OFFSET ?";
