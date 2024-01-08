@@ -71,8 +71,12 @@ public class StudentServiceImpl implements StudentService {
      * @throws SQLException
      */
     @Override
-    public List<Student> getallStudent() throws SQLException {
-        return studentDao.findAll();
+    public List<Student> getallStudent(Long pageNo, Long size, String field,String patten) throws SQLException {
+        try {
+            return studentDao.findAll(pageNo, size, field, patten);
+        }catch (SQLException e){
+            throw e;
+        }
     }
 
 }
