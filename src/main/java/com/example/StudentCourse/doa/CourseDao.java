@@ -1,17 +1,13 @@
 package com.example.StudentCourse.doa;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import com.example.StudentCourse.entities.Course;
 
@@ -106,14 +102,40 @@ public class CourseDao {
 
     }
 
-    public List<Course> findAll() throws SQLException{
+    public List<Course> findAll(Long pageNo,Long size,String field,String patten) throws SQLException{
+        long offSet = 0L;
+        long limit = 0L;
+        String sql;
 
-        String sql = "SELECT * FROM course_info;";
+        if(field==null){
+            field = "id";
+        }
+
+        if(size==null) {
+            size = 20L;
+        }
+
+        if(pageNo==null){
+            limit = Long.MAX_VALUE;
+        }
+        else{
+            offSet = (pageNo)*size;
+            limit = size;
+        }
+
+        sql = "SELECT * FROM course_info ORDER BY ? LIMIT ? OFFSET ?";
+
+        if(patten!=null){
+            sql = "SELECT * FROM course_info WHERE id LIKE "+ "\'%" +patten+"%\'" +" OR title LIKE "+ "\'%" +patten+"%\'" +" OR description LIKE "+ "\'%" +patten+"%\'" +" ORDER BY ? LIMIT ? OFFSET ?";
+        }
         List<Course> courseList = new ArrayList<>();
-
         try {
-            Statement preparedStatement = connection.createStatement();
-            ResultSet resultSet = preparedStatement.executeQuery(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setString(1,field);
+            preparedStatement.setLong(2,limit);
+            preparedStatement.setLong(3,offSet);
+            ResultSet resultSet = preparedStatement.executeQuery();
                 while(resultSet.next()) {
                     Course course = new Course();
                     course.setId(resultSet.getString("id"));

@@ -10,5 +10,5 @@ public interface CourseService {
     public String updateCourse(Course coursedetail) throws SQLException;
     public String deleteCourse(String courseId) throws SQLException;
     public Course getCourse(String courseId) throws SQLException;
-    public List<Course> getallCourse() throws SQLException;
+    public List<Course> getallCourse(Long pageNo,Long size,String field,String patten) throws SQLException;
 }

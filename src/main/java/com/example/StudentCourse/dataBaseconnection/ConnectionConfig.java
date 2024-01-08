@@ -9,9 +9,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ConnectionConfig {
-    private static final String DB_URL = "jdbc:postgresql://pg-1b9c0afa-kishanakbari5555-1a15.a.aivencloud.com:18137/defaultdb";
-    private static final String DB_USER = "avnadmin";
-    private static final String DB_PASSWORD = "AVNS_C5tHw7AQEGB0oO9dm1o";
+    private static final String DB_URL = "jdbc:postgresql://pg-1b9c0afa--1a15.a.aivencloud.com:18137/defaultdb";
+    private static final String DB_USER = "";
+    private static final String DB_PASSWORD = "";
 
     @Bean
     public Connection connectionConfi() throws SQLException {

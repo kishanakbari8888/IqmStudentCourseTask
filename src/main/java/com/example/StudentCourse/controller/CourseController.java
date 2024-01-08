@@ -43,8 +43,8 @@ public class CourseController {
      * @throws SQLException
      */
     @GetMapping("/getallcourse")
-    public List<Course> getallCourse() throws SQLException {
-            return courseservice.getallCourse();
+    public List<Course> getallCourse(@RequestParam(name = "page",required = false) Long pageNo,@RequestParam(name = "size",required = false) Long size,@RequestParam(name = "sortby",required = false) String field,@RequestParam(name = "search",required = false) String patten) throws SQLException {
+        return courseservice.getallCourse(pageNo,size,field,patten);
     }
 
     /**
@@ -54,7 +54,7 @@ public class CourseController {
      * @throws SQLException
      */
     @DeleteMapping("/delete/{id}")
-    public String deleteCourse(@PathVariable("id") String id ) throws SQLException {
+    public String deleteCourse(@PathVariable(value = "id") String id ) throws SQLException {
         return courseservice.deleteCourse(id);
     }
 

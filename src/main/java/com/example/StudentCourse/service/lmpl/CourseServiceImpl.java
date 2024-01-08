@@ -69,9 +69,9 @@ public class CourseServiceImpl implements CourseService {
      * @throws SQLException
      */
     @Override
-    public List<Course> getallCourse() throws SQLException {
+    public List<Course> getallCourse(Long pageNo,Long size,String field,String patten) throws SQLException {
         try {
-            return courseDao.findAll();
+            return courseDao.findAll(pageNo,size,field,patten);
         }catch (SQLException e){
             throw e;
         }
