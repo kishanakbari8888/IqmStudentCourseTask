@@ -1,11 +1,11 @@
 package com.example.StudentCourse.service;
 
 import com.example.StudentCourse.entities.StudentCourse;
-import com.example.StudentCourse.entities.course;
+import com.example.StudentCourse.entities.Course;
 
 import java.util.List;
 
-public interface studentCourseService {
+public interface StudentCourseService {
     public String addStudentToCourse(StudentCourse studentcourseenrollment);
-    public List<course> getAllCourseByStudentId(String studentId);
+    public List<Course> getAllCourseByStudentId(String studentId);
 }
