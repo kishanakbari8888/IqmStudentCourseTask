@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.StudentCourse.entities.Student;
@@ -50,8 +51,8 @@ public class StudentController {
      * @throws SQLException
      */
     @GetMapping("/getallStudent")
-    public List<Student> getallStudent() throws SQLException {
-        return studentseservice.getallStudent();
+    public List<Student> getallStudent(@RequestParam(name = "page",required = false,defaultValue = "0") Long pageNo, @RequestParam(name = "size",required = false,defaultValue = ""+5) Long size, @RequestParam(name = "sortby",required = false,defaultValue = "id") String field, @RequestParam(name = "search",required = false) String patten) throws SQLException  {
+        return studentseservice.getallStudent(pageNo, size, field,patten);
     }
 
     /**

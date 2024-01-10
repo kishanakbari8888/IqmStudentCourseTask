@@ -54,7 +54,7 @@ public class CourseController {
      * @throws SQLException
      */
     @GetMapping("/getallcourse")
-    public List<Course> getallCourse(@RequestParam(name = "page",required = false,defaultValue = "" + Long.MAX_VALUE) Long pageNo, @RequestParam(name = "size",required = false,defaultValue = ""+5) Long size, @RequestParam(name = "sortby",required = false,defaultValue = "id") String field, @RequestParam(name = "search",required = false) String patten) throws SQLException {
+    public List<Course> getallCourse(@RequestParam(name = "page",required = false,defaultValue = "0") Long pageNo, @RequestParam(name = "size",required = false,defaultValue = ""+5) Long size, @RequestParam(name = "sortby",required = false,defaultValue = "id") String field, @RequestParam(name = "search",required = false) String patten) throws SQLException {
         return courseservice.getallCourse(pageNo,size,field,patten);
     }
 
