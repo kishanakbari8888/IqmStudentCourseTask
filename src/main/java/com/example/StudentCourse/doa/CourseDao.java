@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.example.StudentCourse.entities.Course;
@@ -16,6 +19,8 @@ import com.example.StudentCourse.entities.Course;
  */
 @Repository
 public class CourseDao {
+
+    private static Logger logger = (Logger) LoggerFactory.getLogger(CourseDao.class);
 
     private final Connection connection;
 
@@ -79,11 +84,14 @@ public class CourseDao {
     }
 
     public Course findById(String courseId) throws SQLException{
+
+        logger.info("Here we go to findbyId function for find into database");
         String id = courseId;
         String sql = "SELECT *FROM course_info WHERE id = ?;";
         Course course = null;
 
         try {
+            logger.info("hitting sql query in databse");
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1,id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -94,12 +102,12 @@ public class CourseDao {
                     course.setDescription(resultSet.getString("description"));
                 }
             }
+            logger.info("successfully find data form database");
         } catch (SQLException e) {
             e.printStackTrace();
+            logger.error("oops some error occur while querying into database for record");
         }
         return course;
-
-
     }
 
 

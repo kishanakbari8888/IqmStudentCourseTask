@@ -1,5 +1,8 @@
 package com.example.StudentCourse.exceptions;
 
+import lombok.Data;
+
+@Data
 public class SecurityException extends RuntimeException{
     private String errorFiled;
     private String errorReason;

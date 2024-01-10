@@ -16,20 +16,8 @@ import com.example.StudentCourse.entities.Course;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-class PrivateBean {
-	private int id;
-	private String name;
-
-	public PrivateBean(int i, String myBean) {
-		this.id = i;
-		this.name = myBean;
-	}
-}
 @SpringBootApplication
 @Log
-
 public class StudentCourseApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
@@ -38,16 +26,6 @@ public class StudentCourseApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-
-
-
 		log.info("Application Running");
-
-		PrivateBean bean = new PrivateBean(1, "My bean");
-
-		String result = new ObjectMapper()
-				.writeValueAsString(bean);
-
-		log.info(result);
 	}
 }
