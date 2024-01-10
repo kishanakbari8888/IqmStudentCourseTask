@@ -75,6 +75,6 @@ public class CourseServiceImpl implements CourseService {
         }catch (SQLException e){
             throw e;
         }
-
     }
+
 }

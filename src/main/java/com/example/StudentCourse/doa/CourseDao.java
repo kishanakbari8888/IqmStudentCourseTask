@@ -72,7 +72,7 @@ public class CourseDao {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, id);
             preparedStatement.executeUpdate();
-        } catch (SQLException e) {
+        }catch(SQLException e){
             throw e;
         }
 
@@ -137,6 +137,7 @@ public class CourseDao {
                 }
 
         } catch (SQLException e) {
+            System.out.println("SQL Exception");
             throw e;
         }
         return courseList;

@@ -1,13 +1,24 @@
 package com.example.StudentCourse.controller;
 
+import ch.qos.logback.classic.Logger;
+
 import com.example.StudentCourse.entities.Course;
 import com.example.StudentCourse.service.CourseService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @RestController
 @RequestMapping("/api/course")
@@ -68,5 +79,7 @@ public class CourseController {
     public String updateCourse(@RequestBody Course courseDetail ) throws SQLException {
         return courseservice.updateCourse(courseDetail);
     }
+
+
 
 }
