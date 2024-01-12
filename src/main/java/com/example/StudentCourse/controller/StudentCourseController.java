@@ -21,29 +21,29 @@ import com.example.StudentCourse.service.lmpl.StudentCourseServiceImpl;
 @RequestMapping("/api/studentcourse")
 public class StudentCourseController {
 
-//    @Autowired
-//    private StudentCourseServiceImpl studentcourseserviceImpl;
-//
-//    /**
-//     * Post Request for adding student to course
-//     * @param studentcourse
-//     * @return
-//     */
-//    @PostMapping("/add")
-//    public String addStudentToCourse(@RequestBody StudentCourse studentcourse){
-//
-//        return studentcourseserviceImpl.addStudentToCourse(studentcourse);
-//    }
-//
-//    /**
-//     * Get request for find all course taken by student by student id
-//     * @param id
-//     * @return
-//     */
-//    @GetMapping("/{id}")
-//    public List<Course> getAllCourseById(@PathVariable("id") String id){
-//
-//        return studentcourseserviceImpl.getAllCourseByStudentId(id);
-//    }
+    @Autowired
+    private StudentCourseServiceImpl studentcourseserviceImpl;
+
+    /**
+     * Post Request for adding student to course
+     * @param studentcourse
+     * @return
+     */
+    @PostMapping("/add")
+    public String addStudentToCourse(@RequestBody StudentCourse studentcourse){
+
+        return studentcourseserviceImpl.addStudentToCourse(studentcourse);
+    }
+
+    /**
+     * Get request for find all course taken by student by student id
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    public List<Course> getAllCourseById(@PathVariable("id") String id){
+
+        return studentcourseserviceImpl.getAllCourseByStudentId(id);
+    }
 
 }

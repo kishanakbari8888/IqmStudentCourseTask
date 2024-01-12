@@ -15,35 +15,35 @@ import com.example.StudentCourse.service.StudentCourseService;
 @Service
 public class StudentCourseServiceImpl implements StudentCourseService {
 
-//    @Autowired
-//    private StudentCourseDao studentCourseDao;
-//
-//    /**
-//     * add student with corresponding course
-//     * @param studentcourseenrollment
-//     * @return
-//     */
-//    @Override
-//    public String addStudentToCourse(StudentCourse studentcourseenrollment) {
-//        try {
-//            studentCourseDao.add(studentcourseenrollment);
-//            return "Successful";
-//        }catch(SQLException e){
-//            return "UnSuccessful";
-//        }
-//    }
-//
-//    /**
-//     * find all courses in which student enrolled by student id
-//     * @param studentId
-//     * @return
-//     */
-//    @Override
-//    public List<Course> getAllCourseByStudentId(String studentId) {
-//        try {
-//            return studentCourseDao.getAllCourseByStudentId(studentId);
-//        } catch (SQLException e) {
-//            return null;
-//        }
-//    }
+    @Autowired
+    private StudentCourseDao studentCourseDao;
+
+    /**
+     * add student with corresponding course
+     * @param studentcourseenrollment
+     * @return
+     */
+    @Override
+    public String addStudentToCourse(StudentCourse studentcourseenrollment) {
+        try {
+            studentCourseDao.add(studentcourseenrollment);
+            return "Successful";
+        }catch(SQLException e){
+            return "UnSuccessful";
+        }
+    }
+
+    /**
+     * find all courses in which student enrolled by student id
+     * @param studentId
+     * @return
+     */
+    @Override
+    public List<Course> getAllCourseByStudentId(String studentId) {
+        try {
+            return studentCourseDao.getAllCourseByStudentId(studentId);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
 }
