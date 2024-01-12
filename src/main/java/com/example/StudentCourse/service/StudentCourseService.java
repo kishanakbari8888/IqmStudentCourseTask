@@ -6,6 +6,6 @@ import com.example.StudentCourse.entities.Course;
 import java.util.List;
 
 public interface StudentCourseService {
-    public String addStudentToCourse(StudentCourse studentcourseenrollment);
-    public List<Course> getAllCourseByStudentId(String studentId);
+//    public String addStudentToCourse(StudentCourse studentcourseenrollment);
+//    public List<Course> getAllCourseByStudentId(String studentId);
 }

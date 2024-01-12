@@ -81,7 +81,7 @@ public class CourseServiceImpl implements CourseService {
             throw new ParameterException("value cann't be less than zero","size");
         }
 
-        if(patten.contains("\"") || patten.contains("\'")){
+        if(patten!=null && (patten.contains("\"") || patten.contains("\'"))){
             throw new SecurityException("search fild","don't Enter special characters");
         }
 

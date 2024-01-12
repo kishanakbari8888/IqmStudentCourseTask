@@ -95,7 +95,7 @@ public class CourseController {
      * @throws SQLException
      */
     @PutMapping("/update")
-    public String updateCourse(@RequestBody Course courseDetail ) throws SQLException {
+    public String updateCourse(@RequestBody Course courseDetail) throws SQLException {
         return courseservice.updateCourse(courseDetail);
     }
 

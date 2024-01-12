@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +27,9 @@ public class StudentDao {
         String id = student.getId();
         String mobileNo = student.getMobileNo();
         String description = student.getDescription();
+        Integer department = student.getDepartmentId();
 
-        String sql = "INSERT INTO student_info (id,mobile_No,description) VALUES (?, ?,?)";
+        String sql = "INSERT INTO student_info (id,mobile_No,description,department) VALUES (?, ?,?,?)";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -37,6 +37,7 @@ public class StudentDao {
             preparedStatement.setString(1, id);
             preparedStatement.setString(2, mobileNo);
             preparedStatement.setString(3,description);
+            preparedStatement.setInt(4,department);
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -49,18 +50,19 @@ public class StudentDao {
         String id = student.getId();
         String mobileNo = student.getMobileNo();
         String description = student.getDescription();
+        Integer department = student.getDepartmentId();
 
         String sql = "UPDATE student_info \n" +
-                "SET mobile_No = ?, description = ?\n" +
+                "SET mobile_No = ?, description = ?,department = ? " +
                 "WHERE id = ?;";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(3, id);
             preparedStatement.setString(1, mobileNo);
             preparedStatement.setString(2,description);
-
+            preparedStatement.setInt(3,department);
+            preparedStatement.setString(4,id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -95,6 +97,7 @@ public class StudentDao {
                     student.setId(resultSet.getString("id"));
                     student.setMobileNo(resultSet.getString("mobile_No"));
                     student.setDescription(resultSet.getString("description"));
+                    student.setDepartmentId(resultSet.getInt("department"));
                 }
             }
         } catch (SQLException e) {
@@ -142,6 +145,7 @@ public class StudentDao {
                 student.setId(resultSet.getString("id"));
                 student.setMobileNo(resultSet.getString("mobile_No"));
                 student.setDescription(resultSet.getString("description"));
+                student.setDepartmentId(resultSet.getInt("department"));
                 studentList.add(student);
             }
 
