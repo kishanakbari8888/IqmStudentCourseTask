@@ -1,4 +1,4 @@
-package com.example.StudentCourse.doa;
+package com.example.StudentCourse.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

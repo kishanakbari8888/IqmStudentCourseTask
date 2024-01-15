@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.StudentCourse.doa.CourseDao;
+import com.example.StudentCourse.dao.CourseDao;
 import com.example.StudentCourse.entities.Course;
 import com.example.StudentCourse.exceptions.ParameterException;
 import com.example.StudentCourse.exceptions.SecurityException;

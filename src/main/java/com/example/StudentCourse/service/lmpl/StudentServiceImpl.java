@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.StudentCourse.doa.StudentDao;
+import com.example.StudentCourse.dao.StudentDao;
 import com.example.StudentCourse.entities.Student;
 import com.example.StudentCourse.service.StudentService;
 

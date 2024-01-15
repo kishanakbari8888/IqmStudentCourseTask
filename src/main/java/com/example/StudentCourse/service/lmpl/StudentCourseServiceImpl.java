@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.StudentCourse.doa.StudentCourseDao;
+import com.example.StudentCourse.dao.StudentCourseDao;
 import com.example.StudentCourse.entities.Course;
 import com.example.StudentCourse.entities.StudentCourse;
 import com.example.StudentCourse.service.StudentCourseService;
