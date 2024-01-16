@@ -2,6 +2,7 @@ package com.example.StudentCourse.service.lmpl;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -67,11 +68,12 @@ public class StudentServiceImpl implements StudentService {
 
     /**
      * get students detail form database
+     *
      * @return student list
      * @throws SQLException
      */
     @Override
-    public List<Student> getallStudent(Long pageNo, Long size, String field,String patten) throws SQLException {
+    public List<Map<String, Object>> getallStudent(Long pageNo, Long size, String field, String patten) throws SQLException {
         try {
             return studentDao.findAll(pageNo, size, field, patten);
         }catch (SQLException e){

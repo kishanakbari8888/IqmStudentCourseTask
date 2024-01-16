@@ -1,6 +1,6 @@
 package com.example.StudentCourse.controller;
 
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponse;
 
 import java.sql.SQLException;
 import java.util.List;

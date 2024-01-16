@@ -10,12 +10,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class DepartmentDao {
 
     private final Connection connection;
+    private static Logger logger = (Logger) LoggerFactory.getLogger(DepartmentDao.class);
+
 
     public DepartmentDao(Connection connection){
         this.connection = connection;
@@ -65,8 +69,10 @@ public class DepartmentDao {
     public List<Map<String,Object>> getAllCoursewithdepartment() throws SQLException {
         String sqlDepartment = "select di.id,di.title,di.desciption from department di;";
         List<Map<String, Object>> CourseIdsByDepartment = new LinkedList<>();
+        logger.info("now we at get all course with department");
 
         try{
+            logger.info("hitting sql");
             Statement preparedStatement = connection.createStatement();
             ResultSet resultSet = preparedStatement.executeQuery(sqlDepartment);
             while(resultSet.next()) {
@@ -92,19 +98,21 @@ public class DepartmentDao {
                 tmp.put("courseId",courseListId);
                 CourseIdsByDepartment.add(tmp);
             }
-
-
+            logger.info("Successfully get data");
         } catch (SQLException e) {
+            logger.info("error occur",e.getMessage());
             throw e;
         }
         return CourseIdsByDepartment;
     }
 
     public List<Map<String,Object>> getAllStudentwithdepartment() throws SQLException {
+        logger.info("now we at get all student with department");
         String sqlDepartment = "select di.id,di.title,di.desciption from department di;";
         List<Map<String, Object>> studentIdsByDepartment = new LinkedList<>();
 
         try{
+            logger.info("hitting sql");
             Statement preparedStatement = connection.createStatement();
             ResultSet resultSet = preparedStatement.executeQuery(sqlDepartment);
             while(resultSet.next()) {
@@ -130,23 +138,23 @@ public class DepartmentDao {
                 tmp.put("studentId",studentListId);
                 studentIdsByDepartment.add(tmp);
             }
-
-
+            logger.info("Successfully get data");
         } catch (SQLException e) {
+            logger.info("error occur",e.getMessage());
             throw e;
         }
         return studentIdsByDepartment;
     }
 
     public List<Map<String,Object>> revenuePerDepartment() throws SQLException{
-
+        logger.info("now we at get revenue per department");
         String sql = "select department , sum(fee) as revenue from studentcourse sc inner join course_info ci on sc.courseid = ci.id group by department;";
         List<Map<String,Object>> revenueListbyDeparment = new LinkedList<>();
 
         try{
+            logger.info("hitting sql");
             Statement preparedStatement = connection.createStatement();
             ResultSet resultSet = preparedStatement.executeQuery(sql);
-
             while(resultSet.next()){
                 Map<String,Object> tmp = new HashMap<>();
                 String department = resultSet.getString("department");
@@ -155,8 +163,9 @@ public class DepartmentDao {
                 tmp.put("revenue",revenue);
                 revenueListbyDeparment.add(tmp);
             }
-
+            logger.info("Successfully get data");
         }catch (SQLException e){
+            logger.info("error occur",e.getMessage());
             throw e;
         }
 
@@ -164,14 +173,15 @@ public class DepartmentDao {
     }
 
     public List<Map<String,Object>> feesPerStudent() throws SQLException {
+        logger.info("now we at get all fees pre student");
         String sql = "select sc.studentId, sum(fee) as fee from studentcourse sc inner join course_info ci on sc.courseid = ci.id group by studentid;";
 
         List<Map<String,Object>> feesPerStudent = new LinkedList<>();
 
         try{
+            logger.info("hitting sql");
             Statement preparedStatement = connection.createStatement();
             ResultSet resultSet = preparedStatement.executeQuery(sql);
-
             while(resultSet.next()){
                 Map<String,Object> tmp = new HashMap<>();
                 String department = resultSet.getString("studentid");
@@ -180,8 +190,9 @@ public class DepartmentDao {
                 tmp.put("fee",revenue);
                 feesPerStudent.add(tmp);
             }
-
+            logger.info("Successfully get data");
         }catch (SQLException e){
+            logger.info("error occur",e.getMessage());
             throw e;
         }
         return feesPerStudent;
