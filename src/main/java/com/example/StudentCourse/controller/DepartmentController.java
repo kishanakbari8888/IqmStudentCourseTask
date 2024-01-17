@@ -8,7 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.StudentCourse.entities.CommonResponse;
@@ -23,45 +25,11 @@ public class DepartmentController {
     private DepartmentServiceImpl departmentService;
     public static Logger logger = LoggerFactory.getLogger(DepartmentController.class);
 //
-    @GetMapping("/countbydepartment")
-    public CommonResponse<List<Map<String, Object>>> getCountBydeparment(){
+    @GetMapping("/getdetailbyfield/{field}")
+    public CommonResponse<List<Map<String, Object>>> getDetailByField(@PathVariable(name = "field") String field){
         logger.info("we are at conntroller layer");
         try{
-            return new CommonResponse<>(departmentService.countStudentCourseByDepartment());
-        } catch (ParameterException e) {
-            logger.info("ParameterException exception occur");
-            return new CommonResponse<>(e);
-        } catch (SecurityException e){
-            logger.info("SecurityException exception occur");
-            return new CommonResponse<>(e);
-        }catch (Exception e){
-            logger.info("exception occur");
-            return new CommonResponse<>(e);
-        }
-    }
-
-    @GetMapping("/getcourselistbydepartmentwise")
-    public CommonResponse<List<Map<String, Object>>> courseListByDepartmentWise(){
-        logger.info("we are at conntroller layer");
-        try{
-            return new CommonResponse<>(departmentService.courseListByDepartmentWise());
-        } catch (ParameterException e) {
-            logger.info("ParameterException exception occur");
-            return new CommonResponse<>(e);
-        } catch (SecurityException e){
-            logger.info("SecurityException exception occur");
-            return new CommonResponse<>(e);
-        }catch (Exception e){
-            logger.info("exception occur");
-            return new CommonResponse<>(e);
-        }
-    }
-
-    @GetMapping("/getstudentlistbydepartmentwise")
-    public CommonResponse<List<Map<String, Object>>> studentListByDepartmentWise(){
-        logger.info("we are at conntroller layer");
-        try{
-            return new CommonResponse<>(departmentService.studentListByDepartmentWise());
+            return new CommonResponse<>(departmentService.getDetailByField(field));
         } catch (ParameterException e) {
             logger.info("ParameterException exception occur");
             return new CommonResponse<>(e);
