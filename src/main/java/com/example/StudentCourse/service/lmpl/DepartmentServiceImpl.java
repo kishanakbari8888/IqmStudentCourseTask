@@ -9,8 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.StudentCourse.dao.CourseDao;
 import com.example.StudentCourse.dao.DepartmentDao;
+import com.example.StudentCourse.exceptions.ParameterException;
 import com.example.StudentCourse.service.DepartmentService;
 
 @Service
@@ -20,23 +20,17 @@ public class DepartmentServiceImpl implements DepartmentService{
     private DepartmentDao department;
     private static Logger logger = (Logger) LoggerFactory.getLogger(DepartmentServiceImpl.class);
 
-
     @Override
-    public List<Map<String, Object>> countStudentCourseByDepartment() throws SQLException{
-        logger.info("we are at service layer");
-        return department.countStudentCourseByDepartment();
-    }
+    public List<Map<String, Object>> getDetailByField(String field) throws SQLException{
+        logger.info("we are at service layer of department");
+        if(field.equals("department"))
+            return department.countStudentCourseByDepartment();
+        else if(field.equals("course"))
+            return department.getAllCoursewithdepartment();
+        else if(field.equals("student"))
+            return department.getAllStudentwithdepartment();
 
-    @Override
-    public List<Map<String, Object>> courseListByDepartmentWise() throws SQLException {
-        logger.info("we are at service layer");
-        return department.getAllCoursewithdepartment();
-    }
-
-    @Override
-    public List<Map<String, Object>> studentListByDepartmentWise() throws SQLException {
-        logger.info("we are at service layer");
-        return department.getAllStudentwithdepartment();
+        throw new ParameterException("you have wrong parameter");
     }
 
     @Override

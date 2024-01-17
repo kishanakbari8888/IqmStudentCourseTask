@@ -77,15 +77,16 @@ public class CourseServiceImpl implements CourseService {
             throw new ParameterException("value cann't be less than zero","page No");
         }
 
-        if(size<0){
+        if(size<=0){
             throw new ParameterException("value cann't be less than zero","size");
         }
 
         if(patten!=null && (patten.contains("\"") || patten.contains("\'"))){
-            throw new SecurityException("search fild","don't Enter special characters");
+            throw new SecurityException("search field","don't Enter special characters");
         }
 
         return courseDao.findAll(pageNo,size,field,patten);
 
     }
+
 }
