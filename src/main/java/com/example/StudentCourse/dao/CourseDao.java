@@ -1,4 +1,4 @@
-package com.example.StudentCourse.doa;
+package com.example.StudentCourse.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Repository;
@@ -32,7 +31,9 @@ public class CourseDao {
         String id = course.getId();
         String title = course.getTitle();
         String description = course.getDescription();
-        String sql = "INSERT INTO course_info (id,title,description) VALUES (?, ?,?)";
+        Integer fee = course.getFee();
+        Integer department = course.getDepartmentId();
+        String sql = "INSERT INTO course_info (id,title,description,fee,department) VALUES (?,?,?,?,?)";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -40,7 +41,8 @@ public class CourseDao {
             preparedStatement.setString(1, id);
             preparedStatement.setString(2, title);
             preparedStatement.setString(3,description);
-
+            preparedStatement.setInt(4,fee);
+            preparedStatement.setInt(5,department);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -52,17 +54,20 @@ public class CourseDao {
         String id = course.getId();
         String title = course.getTitle();
         String description = course.getDescription();
+        Integer fee = course.getFee();
+        Integer department = course.getDepartmentId();
         String sql = "UPDATE course_info \n" +
-                "SET title = ?, description = ?\n" +
-                "WHERE id = ?;";
+                "SET title = ?, description = ?, fee = ?,department = ? " +"WHERE id = ?;";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(3, id);
+
             preparedStatement.setString(1, title);
             preparedStatement.setString(2,description);
-
+            preparedStatement.setInt(3,fee);
+            preparedStatement.setInt(4, department);
+            preparedStatement.setString(5, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -100,6 +105,8 @@ public class CourseDao {
                     course.setId(resultSet.getString("id"));
                     course.setTitle(resultSet.getString("title"));
                     course.setDescription(resultSet.getString("description"));
+                    course.setFee(resultSet.getInt("fee"));
+                    course.setDepartmentId(resultSet.getInt("department"));
                 }
             }
             logger.info("successfully find data form database");
@@ -145,6 +152,8 @@ public class CourseDao {
                 course.setId(resultSet.getString("id"));
                 course.setTitle(resultSet.getString("title"));
                 course.setDescription(resultSet.getString("description"));
+                course.setFee(resultSet.getInt("fee"));
+                course.setDepartmentId(resultSet.getInt("department"));
                 courseList.add(course);
             }
 
@@ -153,6 +162,5 @@ public class CourseDao {
         }
         return courseList;
     }
-
 
 }

@@ -1,12 +1,14 @@
-package com.example.StudentCourse.doa;
+package com.example.StudentCourse.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -28,8 +30,9 @@ public class StudentDao {
         String id = student.getId();
         String mobileNo = student.getMobileNo();
         String description = student.getDescription();
+        Integer department = student.getDepartmentId();
 
-        String sql = "INSERT INTO student_info (id,mobile_No,description) VALUES (?, ?,?)";
+        String sql = "INSERT INTO student_info (id,mobile_No,description,department) VALUES (?, ?,?,?)";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -37,6 +40,7 @@ public class StudentDao {
             preparedStatement.setString(1, id);
             preparedStatement.setString(2, mobileNo);
             preparedStatement.setString(3,description);
+            preparedStatement.setInt(4,department);
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -49,18 +53,19 @@ public class StudentDao {
         String id = student.getId();
         String mobileNo = student.getMobileNo();
         String description = student.getDescription();
+        Integer department = student.getDepartmentId();
 
         String sql = "UPDATE student_info \n" +
-                "SET mobile_No = ?, description = ?\n" +
+                "SET mobile_No = ?, description = ?,department = ? " +
                 "WHERE id = ?;";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(3, id);
             preparedStatement.setString(1, mobileNo);
             preparedStatement.setString(2,description);
-
+            preparedStatement.setInt(3,department);
+            preparedStatement.setString(4,id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -95,6 +100,7 @@ public class StudentDao {
                     student.setId(resultSet.getString("id"));
                     student.setMobileNo(resultSet.getString("mobile_No"));
                     student.setDescription(resultSet.getString("description"));
+                    student.setDepartmentId(resultSet.getInt("department"));
                 }
             }
         } catch (SQLException e) {
@@ -105,17 +111,21 @@ public class StudentDao {
 
     }
 
-    public List<Student> findAll(Long pageNo, Long size, String field,String patten) throws SQLException{
+    public List<Map<String,Object>> findAll(Long pageNo, Long size, String field, String patten) throws SQLException{
         Long offSet = 0L;
         offSet = pageNo*size;
 
-        String sql = "SELECT * FROM student_info ORDER BY ? LIMIT ? OFFSET ?";
+        String sql = "select si.id,si.description,si.mobile_no,si.department,sum(ci.fee) as fee from student_info si inner join studentcourse s on si.id = s.studentid inner join course_info ci on s.courseid=ci.id group by si.id,si.description,si.mobile_no\n" +
+                "\n" +
+                "\n ORDER BY ? LIMIT ? OFFSET ?";
 
         if(patten!=null){
-            sql = "SELECT * FROM student_info WHERE id LIKE ? OR mobile_no LIKE ? OR description LIKE ? ORDER BY ? LIMIT ? OFFSET ?";
+            sql = "select si.id,si.description,si.mobile_no,si.department,sum(ci.fee) as fee from student_info si inner join studentcourse s on si.id = s.studentid inner join course_info ci on s.courseid=ci.id group by si.id,si.description,si.mobile_no\n" +
+                    "\n" +
+                    "\n WHERE id LIKE ? OR mobile_no LIKE ? OR description LIKE ? ORDER BY ? LIMIT ? OFFSET ?";
         }
 
-        List<Student> studentList = new ArrayList<>();
+        List<Map<String,Object>> studentList = new LinkedList<>();
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -138,10 +148,12 @@ public class StudentDao {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()) {
-                Student student = new Student();
-                student.setId(resultSet.getString("id"));
-                student.setMobileNo(resultSet.getString("mobile_No"));
-                student.setDescription(resultSet.getString("description"));
+                Map<String,Object> student = new HashMap<>();
+                student.put("id",resultSet.getString("id"));
+                student.put("mobile No",resultSet.getString("mobile_No"));
+                student.put("description",resultSet.getString("description"));
+                student.put("department",resultSet.getInt("department"));
+                student.put("fee",resultSet.getInt("fee"));
                 studentList.add(student);
             }
 
