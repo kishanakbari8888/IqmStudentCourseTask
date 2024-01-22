@@ -123,95 +123,92 @@ public class DepartmentDao {
     public List<Map<String, Object>> getAllStudentwithdepartment() throws SQLException {
         logger.info("now we at get all student with department");
         String sqlDepartment = "select di.id,di.title,di.desciption from department di;";
-        List<Map<String, Object>> studentIdsByDepartment = new LinkedList<>();
-
-        try {
-            logger.info("hitting sql");
-            Statement preparedStatement = connection.createStatement();
-            ResultSet resultSet = preparedStatement.executeQuery(sqlDepartment);
-            while (resultSet.next()) {
-                Map<String, Object> tmp = new HashMap<>();
-                Integer department = resultSet.getInt("id");
-                String title = resultSet.getString("title");
-                String description = resultSet.getString("desciption");
-
-                tmp.put("departmentId", department);
-                tmp.put("title", title);
-                tmp.put("description", description);
-
-                String SqlStudentCount = "select id from student_info ci where department = ?;";
-                PreparedStatement preparedStatementForStudent = connection.prepareStatement(SqlStudentCount);
-                preparedStatementForStudent.setInt(1, department);
-                ResultSet resultSetForCourse = preparedStatementForStudent.executeQuery();
-
-                List<Object> studentListId = new LinkedList<>();
-
-                while (resultSetForCourse.next()) {
-                    studentListId.add(resultSetForCourse.getString("id"));
+        return jdbcTemplate.query(sqlDepartment, new PreparedStatementSetter() {
+                @Override
+                public void setValues(PreparedStatement preparedStatement) throws SQLException {
                 }
-                tmp.put("studentId", studentListId);
-                studentIdsByDepartment.add(tmp);
-            }
-            logger.info("Successfully get data");
-        } catch (SQLException e) {
-            logger.info("error occur", e.getMessage());
-            throw e;
-        }
+            }, (resultSet) -> {
+                List<Map<String, Object>> studentIdsByDepartment = new LinkedList<>();
+                while (resultSet.next()) {
 
-        return studentIdsByDepartment;
+                    Map<String, Object> tmp = new HashMap<>();
+                    Integer department = resultSet.getInt("id");
+                    String title = resultSet.getString("title");
+                    String description = resultSet.getString("desciption");
+
+                    tmp.put("departmentId", department);
+                    tmp.put("title", title);
+                    tmp.put("description", description);
+
+                    String SqlStudentCount = "select id from student_info ci where department = ?;";
+                    List<Object> studentListId = jdbcTemplate.query(SqlStudentCount, new PreparedStatementSetter() {
+                            @Override
+                                public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                                    preparedStatement.setInt(1, department);
+                                }
+                            }, (resultSetForCourse) -> {
+                                List<Object> studentListIdtmp = new LinkedList<>();
+    //
+                                while (resultSetForCourse.next()) {
+                                    studentListIdtmp.add(resultSetForCourse.getString("id"));
+                                }
+                                return studentListIdtmp;
+                    });
+
+                    tmp.put("studentId", studentListId);
+                    studentIdsByDepartment.add(tmp);
+                }
+
+            return studentIdsByDepartment;
+        });
+
     }
 
     public List<Map<String, Object>> revenuePerDepartment() throws SQLException {
         logger.info("now we at get revenue per department");
         String sql = "select department , sum(fee) as revenue from studentcourse sc inner join course_info ci on sc.courseid = ci.id group by department;";
-        List<Map<String, Object>> revenueListbyDeparment = new LinkedList<>();
+        return jdbcTemplate.query(sql, new PreparedStatementSetter() {
+                @Override
+                public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                }
+            }, (resultSet) -> {
+                List<Map<String, Object>> revenueListbyDeparment = new LinkedList<>();
+                while (resultSet.next()) {
+                    Map<String, Object> tmp = new HashMap<>();
+                    String department = resultSet.getString("department");
+                    Integer revenue = resultSet.getInt("revenue");
+                    tmp.put("department", department);
+                    tmp.put("revenue", revenue);
+                    revenueListbyDeparment.add(tmp);
+                }
 
-        try {
-            logger.info("hitting sql");
-            Statement preparedStatement = connection.createStatement();
-            ResultSet resultSet = preparedStatement.executeQuery(sql);
-            while (resultSet.next()) {
-                Map<String, Object> tmp = new HashMap<>();
-                String department = resultSet.getString("department");
-                Integer revenue = resultSet.getInt("revenue");
-                tmp.put("department", department);
-                tmp.put("revenue", revenue);
-                revenueListbyDeparment.add(tmp);
-            }
-            logger.info("Successfully get data");
-        } catch (SQLException e) {
-            logger.info("error occur", e.getMessage());
-            throw e;
-        }
+            return revenueListbyDeparment;
+        });
 
-        return revenueListbyDeparment;
     }
 
     public List<Map<String, Object>> feesPerStudent() throws SQLException {
         logger.info("now we at get all fees pre student");
         String sql = "select sc.studentId, sum(fee) as fee from studentcourse sc inner join course_info ci on sc.courseid = ci.id group by studentid;";
 
-        List<Map<String, Object>> feesPerStudent = new LinkedList<>();
+        return jdbcTemplate.query(sql, new PreparedStatementSetter() {
+                @Override
+                public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                }
+            }, (resultSet) -> {
+                List<Map<String, Object>> feesPerStudent = new LinkedList<>();
+                while (resultSet.next()) {
+                    Map<String, Object> tmp = new HashMap<>();
+                    String department = resultSet.getString("studentid");
+                    Integer revenue = resultSet.getInt("fee");
+                    tmp.put("studentid", department);
+                    tmp.put("fee", revenue);
+                    feesPerStudent.add(tmp);
+                }
 
-        try {
-            logger.info("hitting sql");
-            Statement preparedStatement = connection.createStatement();
-            ResultSet resultSet = preparedStatement.executeQuery(sql);
-            while (resultSet.next()) {
-                Map<String, Object> tmp = new HashMap<>();
-                String department = resultSet.getString("studentid");
-                Integer revenue = resultSet.getInt("fee");
-                tmp.put("studentid", department);
-                tmp.put("fee", revenue);
-                feesPerStudent.add(tmp);
-            }
-            logger.info("Successfully get data");
-        } catch (SQLException e) {
-            logger.info("error occur", e.getMessage());
-            throw e;
-        }
+            return feesPerStudent;
+        });
 
-        return feesPerStudent;
     }
 
 }

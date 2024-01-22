@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +15,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 
-import com.example.StudentCourse.entities.Course;
 import com.example.StudentCourse.entities.Student;
 import com.example.StudentCourse.entities.subentites.Address;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -99,31 +97,20 @@ public class StudentDao {
         String id = studentId;
         String sql = "SELECT *FROM student_info WHERE id = ?;";
 
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
         return jdbcTemplate.query(sql, new PreparedStatementSetter() {
-            @Override
-            public void setValues(PreparedStatement preparedStatement) throws SQLException {
-                preparedStatement.setString(1, id);
-            }
-        }, (resultSet) -> {
-            Student student = null;
-            if (resultSet.next()) {
-                student = new Student();
-                student.setId(resultSet.getString("id"));
-                student.setMobileNo(resultSet.getString("mobile_No"));
-                student.setDescription(resultSet.getString("description"));
-                student.setDepartmentId(resultSet.getInt("department"));
-            }
+                @Override
+                public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                    preparedStatement.setString(1, id);
+                }
+            }, (resultSet) -> {
+                Student student = null;
+                if (resultSet.next()) {
+                    student = new Student();
+                    student.setId(resultSet.getString("id"));
+                    student.setMobileNo(resultSet.getString("mobile_No"));
+                    student.setDescription(resultSet.getString("description"));
+                    student.setDepartmentId(resultSet.getInt("department"));
+                }
             return student;
         });
 
