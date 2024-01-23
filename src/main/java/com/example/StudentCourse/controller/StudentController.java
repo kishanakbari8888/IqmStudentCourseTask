@@ -2,6 +2,7 @@ package com.example.StudentCourse.controller;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -50,10 +51,8 @@ public class StudentController {
      * @return
      * @throws SQLException
      */
-
-
     @GetMapping("/getallStudent")
-    public List<Student> getallStudent(@RequestParam(name = "page",required = false,defaultValue = "0") Long pageNo, @RequestParam(name = "size",required = false,defaultValue = ""+5) Long size, @RequestParam(name = "sortby",required = false,defaultValue = "id") String field, @RequestParam(name = "search",required = false) String patten) throws SQLException  {
+    public List<Map<String,Object>>  getallStudent(@RequestParam(name = "page",required = false,defaultValue = "0") Long pageNo, @RequestParam(name = "size",required = false,defaultValue = ""+5) Long size, @RequestParam(name = "sortby",required = false,defaultValue = "id") String field, @RequestParam(name = "search",required = false) String patten) throws SQLException  {
         return studentseservice.getallStudent(pageNo, size, field,patten);
     }
 

@@ -6,8 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.StudentCourse.doa.CourseDao;
+import com.example.StudentCourse.dao.CourseDao;
 import com.example.StudentCourse.entities.Course;
+import com.example.StudentCourse.exceptions.ParameterException;
+import com.example.StudentCourse.exceptions.SecurityException;
 import com.example.StudentCourse.service.CourseService;
 
 @Service
@@ -70,11 +72,21 @@ public class CourseServiceImpl implements CourseService {
      */
     @Override
     public List<Course> getallCourse(Long pageNo,Long size,String field,String patten) throws SQLException {
-        try {
-            return courseDao.findAll(pageNo,size,field,patten);
-        }catch (SQLException e){
-            throw e;
+
+        if(pageNo<0){
+            throw new ParameterException("value cann't be less than zero","page No");
         }
 
+        if(size<=0){
+            throw new ParameterException("value cann't be less than zero","size");
+        }
+
+        if(patten!=null && (patten.contains("\"") || patten.contains("\'"))){
+            throw new SecurityException("search field","don't Enter special characters");
+        }
+
+        return courseDao.findAll(pageNo,size,field,patten);
+
     }
+
 }
