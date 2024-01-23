@@ -1,12 +1,9 @@
-package com.example.StudentCourse.doa;
-
-import jdk.jfr.Registered;
+package com.example.StudentCourse.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 

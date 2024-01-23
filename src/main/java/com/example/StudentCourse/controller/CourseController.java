@@ -1,6 +1,6 @@
 package com.example.StudentCourse.controller;
 
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponse;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -95,7 +95,7 @@ public class CourseController {
      * @throws SQLException
      */
     @PutMapping("/update")
-    public String updateCourse(@RequestBody Course courseDetail ) throws SQLException {
+    public String updateCourse(@RequestBody Course courseDetail) throws SQLException {
         return courseservice.updateCourse(courseDetail);
     }
 

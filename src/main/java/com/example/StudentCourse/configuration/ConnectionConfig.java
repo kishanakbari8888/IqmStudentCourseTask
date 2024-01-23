@@ -1,4 +1,4 @@
-package com.example.StudentCourse.dataBaseconnection;
+package com.example.StudentCourse.configuration;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
