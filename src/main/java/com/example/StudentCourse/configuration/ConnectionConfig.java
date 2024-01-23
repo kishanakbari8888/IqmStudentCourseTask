@@ -17,11 +17,11 @@ import javax.sql.DataSource;
 public class ConnectionConfig {
     private static final String DB_URL_Postgres = "jdbc:postgresql://pg-1b9c0afa-kishanakbari5555-1a15.a.aivencloud.com:18137/defaultdb";
     private static final String DB_USER_Postgres = "avnadmin";
-    private static final String DB_PASSWORD_Postgres = "";
+    private static final String DB_PASSWORD_Postgres = "AVNS_C5tHw7AQEGB0oO9dm1o";
 
     private static final String DB_URL_MYSQL = "jdbc:mysql://mysql-3e74fe9a-kishanakbari5555-1a15.a.aivencloud.com:18137/defaultdb";
     private static final String DB_USER_MYSQL = "avnadmin";
-    private static final String DB_PASSWORD_MYSQL = "";
+    private static final String DB_PASSWORD_MYSQL = "AVNS_vKWd94Um7HTNGRH7lKW";
 
 
     @Primary

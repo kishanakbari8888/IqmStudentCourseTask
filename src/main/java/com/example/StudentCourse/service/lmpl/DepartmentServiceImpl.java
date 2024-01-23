@@ -25,24 +25,29 @@ public class DepartmentServiceImpl implements DepartmentService{
         logger.info("we are at service layer of department");
         if(field.equals("department"))
             return department.countStudentCourseByDepartment();
-        else if(field.equals("course"))
+        else if(field.equals("course")) {
             return department.getAllCoursewithdepartment();
-        else if(field.equals("student"))
+        }
+        else if(field.equals("student")) {
             return department.getAllStudentwithdepartment();
+        }
+        logger.info("we successfully fetch data from dataBase");
 
         throw new ParameterException("you have wrong parameter");
     }
 
     @Override
     public List<Map<String, Object>> revenuePerDepartment() throws SQLException {
-        logger.info("we are at service layer");
-        return department.revenuePerDepartment();
+        List<Map<String, Object>> revenuePerDeprt =  department.revenuePerDepartment();
+        logger.info("Successfully fetch data from database");
+        return revenuePerDeprt;
     }
 
     @Override
     public List<Map<String, Object>> feesPerStudent() throws SQLException {
-        logger.info("we are at service layer");
-        return department.feesPerStudent();
+        List<Map<String, Object>> feesPerDeprt = department.feesPerStudent();
+        logger.info("Successfully fetch data from database");
+        return feesPerDeprt;
     }
 
 }

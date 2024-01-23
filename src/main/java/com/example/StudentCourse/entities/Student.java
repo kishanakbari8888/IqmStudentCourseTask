@@ -1,6 +1,7 @@
 package com.example.StudentCourse.entities;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Builder
 public class Student {
     private String id;
     private String mobileNo;

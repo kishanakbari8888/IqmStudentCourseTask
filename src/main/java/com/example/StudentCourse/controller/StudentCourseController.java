@@ -1,5 +1,7 @@
 package com.example.StudentCourse.controller;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,9 +21,9 @@ import com.example.StudentCourse.service.lmpl.StudentCourseServiceImpl;
 @RestController
 @RequestMapping("/api/studentcourse")
 public class StudentCourseController {
-
     @Autowired
     private StudentCourseServiceImpl studentcourseserviceImpl;
+    private static Logger logger = (Logger) LoggerFactory.getLogger(StudentCourseController.class);
 
     /**
      * Post Request for adding student to course
@@ -30,6 +32,8 @@ public class StudentCourseController {
      */
     @PostMapping("/add")
     public CommonResponse addStudentToCourse(@RequestBody StudentCourse studentcourse, HttpServletResponse httpServletResponse){
+        logger.info("we are at add student course mapping end-point");
+
         CommonResponse commonResponse;
         try{
             commonResponse = new CommonResponse(studentcourseserviceImpl.addStudentToCourse(studentcourse));
@@ -53,6 +57,7 @@ public class StudentCourseController {
      */
     @GetMapping("/{id}")
     public CommonResponse getAllCourseById(@PathVariable("id") String id,HttpServletResponse httpServletResponse){
+        logger.info("get all course by id end-point");
 
         CommonResponse commonResponse;
         try{

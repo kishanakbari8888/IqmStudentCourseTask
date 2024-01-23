@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,11 +27,15 @@ import com.example.StudentCourse.exceptions.ParameterException;
 import com.example.StudentCourse.service.StudentService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+
 @RestController
 @RequestMapping("/api/student")
 public class StudentController {
     @Autowired
     private StudentService studentseservice;
+    private static Logger logger = (Logger) LoggerFactory.getLogger(StudentController.class);
+
+
 
     /**
      * POST request for inserting student detail in database
@@ -39,6 +45,7 @@ public class StudentController {
      */
     @PostMapping("/create")
     public CommonResponse createStudent(@RequestBody @Valid Student studentDetail, HttpServletResponse httpServletResponse) throws SQLException, JsonProcessingException {
+        logger.info("we are at create student Controller");
         CommonResponse commonResponse;
         try{
             commonResponse = new CommonResponse(studentseservice.createStudent(studentDetail));
@@ -63,6 +70,7 @@ public class StudentController {
      */
     @GetMapping("/get/{id}")
     public CommonResponse getbyId(@PathVariable("id") String id,HttpServletResponse httpServletResponse) throws SQLException {
+        logger.info("we are at get student by id Controller");
 
         CommonResponse commonResponse;
         try{
@@ -87,10 +95,12 @@ public class StudentController {
      */
     @GetMapping("/getallStudent")
     public CommonResponse<List<Map<String,Object>>>  getallStudent(@RequestParam(name = "page",required = false,defaultValue = "0") Long pageNo, @RequestParam(name = "size",required = false,defaultValue = ""+5) Long size, @RequestParam(name = "sortby",required = false,defaultValue = "id") String field, @RequestParam(name = "search",required = false) String patten,HttpServletResponse httpServletResponse) throws SQLException  {
+        logger.info("we are at get all student Controller");
 
         CommonResponse commonResponse;
         try{
-            commonResponse = new CommonResponse(studentseservice.getallStudent(pageNo, size, field,patten));
+            commonResponse = new CommonResponse();
+            commonResponse.setData(studentseservice.getallStudent(pageNo, size, field,patten));
         }catch (ParameterException e){
             commonResponse = new CommonResponse<>(e);
             httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
@@ -112,6 +122,7 @@ public class StudentController {
      */
     @DeleteMapping("/delete/{id}")
     public CommonResponse deleteStudent(@PathVariable("id") String id,HttpServletResponse httpServletResponse) throws SQLException {
+        logger.info("we are at delete all student Controller");
 
         CommonResponse commonResponse;
         try{
@@ -137,6 +148,7 @@ public class StudentController {
      */
     @PutMapping("/update")
     public CommonResponse updateStudent(@RequestBody Student studentDetail,HttpServletResponse httpServletResponse ) throws SQLException {
+        logger.info("we are at update student Controller");
 
         CommonResponse commonResponse;
         try{
