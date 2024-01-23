@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.StudentCourse.dao.StudentDao;
 import com.example.StudentCourse.entities.Student;
 import com.example.StudentCourse.service.StudentService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -26,7 +27,7 @@ public class StudentServiceImpl implements StudentService {
      * @throws SQLException
      */
     @Override
-    public String createStudent(Student studentdetail) throws SQLException {
+    public String createStudent(Student studentdetail) throws SQLException, JsonProcessingException {
         studentDao.save(studentdetail);
         return "success";
     }

@@ -36,8 +36,21 @@ public class CourseController {
      * @throws SQLException
      */
     @PostMapping("/create")
-    public String createCourse(@RequestBody Course courseDetail) throws SQLException {
-        return courseservice.createCourse(courseDetail);
+    public CommonResponse<String> createCourse(@RequestBody Course courseDetail,HttpServletResponse httpServletResponse){
+        CommonResponse commonResponse;
+        try{
+            commonResponse = new CommonResponse(courseservice.createCourse(courseDetail));
+        }catch (ParameterException e){
+            commonResponse = new CommonResponse<>(e);
+            httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        }catch (SecurityException e){
+            commonResponse = new CommonResponse<>(e);
+            httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        }catch (Exception e){
+            commonResponse = new CommonResponse<>(e);
+            httpServletResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
+        return commonResponse;
     }
 
     /**
@@ -47,8 +60,22 @@ public class CourseController {
      * @throws SQLException
      */
     @GetMapping("/get/{id}")
-    public Course getbyId(@PathVariable("id") String id) throws SQLException {
-        return courseservice.getCourse(id);
+    public CommonResponse<Course> getbyId(@PathVariable("id") String id,HttpServletResponse httpServletResponse) throws SQLException {
+
+        CommonResponse commonResponse;
+        try{
+            commonResponse = new CommonResponse(courseservice.getCourse(id));
+        }catch (ParameterException e){
+            commonResponse = new CommonResponse<>(e);
+            httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        }catch (SecurityException e){
+            commonResponse = new CommonResponse<>(e);
+            httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        }catch (Exception e){
+            commonResponse = new CommonResponse<>(e);
+            httpServletResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
+        return commonResponse;
     }
 
     /**
@@ -84,8 +111,22 @@ public class CourseController {
      * @throws SQLException
      */
     @DeleteMapping("/delete/{id}")
-    public String deleteCourse(@PathVariable(value = "id") String id ) throws SQLException {
-        return courseservice.deleteCourse(id);
+    public CommonResponse<String> deleteCourse(@PathVariable(value = "id") String id,HttpServletResponse httpServletResponse) throws SQLException {
+
+        CommonResponse commonResponse;
+        try{
+            commonResponse = new CommonResponse(courseservice.deleteCourse(id));
+        }catch (ParameterException e){
+            commonResponse = new CommonResponse<>(e);
+            httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        }catch (SecurityException e){
+            commonResponse = new CommonResponse<>(e);
+            httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        }catch (Exception e){
+            commonResponse = new CommonResponse<>(e);
+            httpServletResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
+        return commonResponse;
     }
 
     /**
@@ -95,8 +136,23 @@ public class CourseController {
      * @throws SQLException
      */
     @PutMapping("/update")
-    public String updateCourse(@RequestBody Course courseDetail) throws SQLException {
-        return courseservice.updateCourse(courseDetail);
+    public CommonResponse<String> updateCourse(@RequestBody Course courseDetail,HttpServletResponse httpServletResponse) throws SQLException {
+
+        CommonResponse commonResponse;
+        try{
+            commonResponse = new CommonResponse(courseservice.updateCourse(courseDetail));
+        }catch (ParameterException e){
+            commonResponse = new CommonResponse<>(e);
+            httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        }catch (SecurityException e){
+            commonResponse = new CommonResponse<>(e);
+            httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        }catch (Exception e){
+            commonResponse = new CommonResponse<>(e);
+            httpServletResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
+        return commonResponse;
+
     }
 
 

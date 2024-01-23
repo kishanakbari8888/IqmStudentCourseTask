@@ -13,6 +13,7 @@ import com.example.StudentCourse.exceptions.SecurityException;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CommonResponse<T> implements Serializable {
     private static final long serialVersionUID = 718459248673647639L;
     private boolean success;
@@ -55,7 +56,6 @@ public class CommonResponse<T> implements Serializable {
         errorObjects = new LinkedList<>();
         errorObjects.add(errorObject);
     }
-
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Data

@@ -2,11 +2,16 @@ package com.example.StudentCourse.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 
 import com.example.StudentCourse.entities.Course;
@@ -20,55 +25,52 @@ import com.example.StudentCourse.entities.StudentCourse;
 public class StudentCourseDao {
 
     private final Connection connection;
+    @Autowired
+    @Qualifier("PostgresConnection")
+    JdbcTemplate jdbcTemplate;
+    private static Logger logger = (Logger) LoggerFactory.getLogger(StudentCourse.class);
+
 
     public StudentCourseDao(final Connection connection){
         this.connection = connection;
     }
 
     public void add(StudentCourse studentCourse) throws SQLException{
-
+        logger.info("we are saving student-course mapping");
         String studentId = studentCourse.getStudentId();
         String courseId = studentCourse.getCourseId();
 
         String sql = "INSERT INTO studentCourse (studentId, courseId) VALUES (?,?)";
 
-        try {
+        jdbcTemplate.update(connection -> {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
             preparedStatement.setString(1, studentId);
             preparedStatement.setString(2, courseId);
-
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            // Handle exceptions
-            e.printStackTrace();
-            throw e;
-        }
+            return preparedStatement;
+        });
+        logger.info("Successfully saved details into database");
     }
 
     public List<Course> getAllCourseByStudentId(String studentId) throws SQLException{
+        logger.info("we are fetching details of all course by student id" + studentId);
         String sql = "SELECT c.id,c.title,c.description FROM studentCourse s INNER JOIN course_info c ON s.courseId=c.id WHERE s.studentId = ?";
-
-        List<Course> courseList = new ArrayList<>();
-
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1,studentId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()) {
-                Course course = new Course();
-                course.setId(resultSet.getString("id"));
-                course.setTitle(resultSet.getString("title"));
-                course.setDescription(resultSet.getString("description"));
-                courseList.add(course);
-            }
-
-        } catch (SQLException e) {
-            throw e;
-        }
-        return courseList;
+        return jdbcTemplate.query(sql, new PreparedStatementSetter() {
+                @Override
+                public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                    preparedStatement.setString(1,studentId);
+                }
+            }, (resultSet) -> {
+                List<Course> courseList = new LinkedList<>();
+                while(resultSet.next()) {
+                    Course course = new Course();
+                    course.setId(resultSet.getString("id"));
+                    course.setTitle(resultSet.getString("title"));
+                    course.setDescription(resultSet.getString("description"));
+                    courseList.add(course);
+                }
+            return courseList;
+        });
 
     }
-
 
 }

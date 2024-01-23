@@ -1,11 +1,7 @@
 package com.example.StudentCourse.controller;
 
-//import com.example.StudentCourse.entities.studentCourseEnrollment;
-//import com.example.StudentCourse.service.studentCourseService;
-
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,8 +9,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.StudentCourse.entities.Course;
+import javax.servlet.http.HttpServletResponse;
+
+import com.example.StudentCourse.entities.CommonResponse;
 import com.example.StudentCourse.entities.StudentCourse;
+import com.example.StudentCourse.exceptions.ParameterException;
 import com.example.StudentCourse.service.lmpl.StudentCourseServiceImpl;
 
 @RestController
@@ -30,9 +29,21 @@ public class StudentCourseController {
      * @return
      */
     @PostMapping("/add")
-    public String addStudentToCourse(@RequestBody StudentCourse studentcourse){
-
-        return studentcourseserviceImpl.addStudentToCourse(studentcourse);
+    public CommonResponse addStudentToCourse(@RequestBody StudentCourse studentcourse, HttpServletResponse httpServletResponse){
+        CommonResponse commonResponse;
+        try{
+            commonResponse = new CommonResponse(studentcourseserviceImpl.addStudentToCourse(studentcourse));
+        }catch (ParameterException e){
+            commonResponse = new CommonResponse<>(e);
+            httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        }catch (SecurityException e){
+            commonResponse = new CommonResponse<>(e);
+            httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        }catch (Exception e){
+            commonResponse = new CommonResponse<>(e);
+            httpServletResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
+        return commonResponse;
     }
 
     /**
@@ -41,9 +52,23 @@ public class StudentCourseController {
      * @return
      */
     @GetMapping("/{id}")
-    public List<Course> getAllCourseById(@PathVariable("id") String id){
+    public CommonResponse getAllCourseById(@PathVariable("id") String id,HttpServletResponse httpServletResponse){
 
-        return studentcourseserviceImpl.getAllCourseByStudentId(id);
+        CommonResponse commonResponse;
+        try{
+            commonResponse = new CommonResponse();
+            commonResponse.setData(studentcourseserviceImpl.getAllCourseByStudentId(id));
+        }catch (ParameterException e){
+            commonResponse = new CommonResponse<>(e);
+            httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        }catch (SecurityException e){
+            commonResponse = new CommonResponse<>(e);
+            httpServletResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        }catch (Exception e){
+            commonResponse = new CommonResponse<>(e);
+            httpServletResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
+        return commonResponse;
     }
 
 }
