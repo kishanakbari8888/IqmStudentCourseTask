@@ -8,7 +8,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -30,12 +32,16 @@ public class StudentDao {
     @Autowired
     @Qualifier("PostgresConnection")
     JdbcTemplate jdbcTemplate;
+    private static Logger logger = (Logger) LoggerFactory.getLogger(StudentDao.class);
+
 
     public StudentDao(final Connection connection) {
         this.connection = connection;
     }
 
     public void save(Student student) throws SQLException, JsonProcessingException {
+        logger.info("we are saving student to database");
+
         String id = student.getId();
         String mobileNo = student.getMobileNo();
         String description = student.getDescription();
@@ -58,9 +64,11 @@ public class StudentDao {
             return preparedStatement;
         });
 
+        logger.info("successfully sava data into database");
     }
 
     public void saveForUpdate(Student student) throws SQLException {
+        logger.info("we are updating student to database" + student.getId());
 
         String id = student.getId();
         String mobileNo = student.getMobileNo();
@@ -80,9 +88,11 @@ public class StudentDao {
             preparedStatement.setString(4, id);
             return preparedStatement;
         });
+        logger.info("successfully update data into database");
     }
 
     public void deleteById(String studentId) throws SQLException {
+        logger.info("we are deleting student to database" + studentId);
         String id = studentId;
         String sql = "delete from student_info where id = ?;";
 
@@ -91,9 +101,12 @@ public class StudentDao {
             preparedStatement.setString(1, id);
             return preparedStatement;
         });
+        logger.info("successfully deleting data into database");
     }
 
     public Student findById(String studentId) throws SQLException {
+        logger.info("we are finding User by id course to database");
+
         String id = studentId;
         String sql = "SELECT *FROM student_info WHERE id = ?;";
 
@@ -117,8 +130,9 @@ public class StudentDao {
     }
 
     public List<Map<String, Object>> findAll(Long pageNo, Long size, String field, final String patten) throws SQLException {
-        final Long offSet = pageNo * size;
+        logger.info("we are find all student to database");
 
+        final Long offSet = pageNo * size;
         String sql = "select si.id,si.description,si.mobile_no,si.department,sum(ci.fee) as fee from student_info si inner join studentcourse s on si.id = s.studentid inner join course_info ci on s.courseid=ci.id group by si.id,si.description,si.mobile_no\n" +
                 "\n" +
                 "\n ORDER BY ? LIMIT ? OFFSET ?";

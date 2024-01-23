@@ -27,6 +27,7 @@ public class CourseDao {
     JdbcTemplate jdbcTemplate;
 
     public void save(Course course) throws SQLException {
+        logger.info("we are saving course to database");
         String id = course.getId();
         String title = course.getTitle();
         String description = course.getDescription();
@@ -44,10 +45,12 @@ public class CourseDao {
             preparedStatement.setInt(5, department);
             return preparedStatement;
         });
+
+        logger.info("successfully sava data into database");
     }
 
     public void saveForUpdate(Course course) throws SQLException {
-
+        logger.info("we are updating course to database" + course.getId());
         String id = course.getId();
         String title = course.getTitle();
         String description = course.getDescription();
@@ -65,9 +68,12 @@ public class CourseDao {
             preparedStatement.setString(5, id);
             return preparedStatement;
         });
+        logger.info("successfully update data into database");
+
     }
 
     public void deleteById(String courseId) throws SQLException {
+        logger.info("we are deleting course to database" + courseId);
         String id = courseId;
         String sql = "delete from course_info where id = ?;";
 
@@ -76,11 +82,13 @@ public class CourseDao {
             preparedStatement.setString(1, id);
             return preparedStatement;
         });
+        logger.info("successfully deleting data into database");
+
     }
 
     public Course findById(String courseId) throws SQLException {
 
-        logger.info("Here we go to findbyId function for find into database");
+        logger.info("we are finding User by id course to database");
         String id = courseId;
         String sql = "SELECT *FROM course_info WHERE id = ?;";
         return jdbcTemplate.query(sql, new PreparedStatementSetter() {
@@ -99,9 +107,11 @@ public class CourseDao {
             }
             return course;
         });
+
     }
 
     public List<Course> findAll(Long pageNo, Long size, String field, final String patten) throws SQLException {
+        logger.info("we are find all course to database");
         final Long offSet;
         offSet = pageNo * size;
 

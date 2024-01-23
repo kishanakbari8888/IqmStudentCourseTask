@@ -2,9 +2,7 @@ package com.example.StudentCourse.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,6 +30,7 @@ public class DepartmentDao {
     }
 
     public List<Map<String, Object>> countStudentCourseByDepartment() throws SQLException {
+        logger.info("we are getting countStudentCourse");
         String sqlCourseCount = "select di.id,di.title,di.desciption,count(*) from department di inner join course_info ci on di.id=ci.department group by di.id,di.title,di.desciption;";
         return jdbcTemplate.query(sqlCourseCount, new PreparedStatementSetter() {
                 @Override
@@ -77,7 +76,7 @@ public class DepartmentDao {
 
     public List<Map<String, Object>> getAllCoursewithdepartment() throws SQLException {
         String sqlDepartment = "select di.id,di.title,di.desciption from department di;";
-        logger.info("now we at get all course with department");
+        logger.info("now we are at get all course with department");
 
         return jdbcTemplate.query(sqlDepartment, new PreparedStatementSetter() {
                 @Override
@@ -107,8 +106,7 @@ public class DepartmentDao {
                                 while (resultSetForCourse.next()) {
                                     courseListIdtmp.add(resultSetForCourse.getString("id"));
                                 }
-
-                                return courseListIdtmp;
+                            return courseListIdtmp;
                     });
 
                     tmp.put("courseId", courseListId);
@@ -121,7 +119,7 @@ public class DepartmentDao {
     }
 
     public List<Map<String, Object>> getAllStudentwithdepartment() throws SQLException {
-        logger.info("now we at get all student with department");
+        logger.info("now we are at get all student with department");
         String sqlDepartment = "select di.id,di.title,di.desciption from department di;";
         return jdbcTemplate.query(sqlDepartment, new PreparedStatementSetter() {
                 @Override
@@ -152,7 +150,7 @@ public class DepartmentDao {
                                 while (resultSetForCourse.next()) {
                                     studentListIdtmp.add(resultSetForCourse.getString("id"));
                                 }
-                                return studentListIdtmp;
+                            return studentListIdtmp;
                     });
 
                     tmp.put("studentId", studentListId);
@@ -165,7 +163,7 @@ public class DepartmentDao {
     }
 
     public List<Map<String, Object>> revenuePerDepartment() throws SQLException {
-        logger.info("now we at get revenue per department");
+        logger.info("now we are at get revenue per department");
         String sql = "select department , sum(fee) as revenue from studentcourse sc inner join course_info ci on sc.courseid = ci.id group by department;";
         return jdbcTemplate.query(sql, new PreparedStatementSetter() {
                 @Override

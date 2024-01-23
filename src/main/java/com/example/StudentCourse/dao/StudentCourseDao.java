@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,13 +28,15 @@ public class StudentCourseDao {
     @Autowired
     @Qualifier("PostgresConnection")
     JdbcTemplate jdbcTemplate;
+    private static Logger logger = (Logger) LoggerFactory.getLogger(StudentCourse.class);
+
 
     public StudentCourseDao(final Connection connection){
         this.connection = connection;
     }
 
     public void add(StudentCourse studentCourse) throws SQLException{
-
+        logger.info("we are saving student-course mapping");
         String studentId = studentCourse.getStudentId();
         String courseId = studentCourse.getCourseId();
 
@@ -44,10 +48,11 @@ public class StudentCourseDao {
             preparedStatement.setString(2, courseId);
             return preparedStatement;
         });
-
+        logger.info("Successfully saved details into database");
     }
 
     public List<Course> getAllCourseByStudentId(String studentId) throws SQLException{
+        logger.info("we are fetching details of all course by student id" + studentId);
         String sql = "SELECT c.id,c.title,c.description FROM studentCourse s INNER JOIN course_info c ON s.courseId=c.id WHERE s.studentId = ?";
         return jdbcTemplate.query(sql, new PreparedStatementSetter() {
                 @Override
