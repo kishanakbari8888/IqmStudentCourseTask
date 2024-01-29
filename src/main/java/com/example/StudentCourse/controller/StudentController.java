@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +46,7 @@ public class StudentController {
      * @throws SQLException
      */
     @PostMapping("/create")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_STUDENT')")
     public CommonResponse createStudent(@RequestBody @Valid Student studentDetail, HttpServletResponse httpServletResponse) throws SQLException, JsonProcessingException {
         logger.info("we are at create student Controller");
         CommonResponse commonResponse;
@@ -69,6 +72,7 @@ public class StudentController {
      * @throws SQLException
      */
     @GetMapping("/get/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public CommonResponse getbyId(@PathVariable("id") String id,HttpServletResponse httpServletResponse) throws SQLException {
         logger.info("we are at get student by id Controller");
 
@@ -94,6 +98,7 @@ public class StudentController {
      * @throws SQLException
      */
     @GetMapping("/getallStudent")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public CommonResponse<List<Map<String,Object>>>  getallStudent(@RequestParam(name = "page",required = false,defaultValue = "0") Long pageNo, @RequestParam(name = "size",required = false,defaultValue = ""+5) Long size, @RequestParam(name = "sortby",required = false,defaultValue = "id") String field, @RequestParam(name = "search",required = false) String patten,HttpServletResponse httpServletResponse) throws SQLException  {
         logger.info("we are at get all student Controller");
 
@@ -121,6 +126,7 @@ public class StudentController {
      * @throws SQLException
      */
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public CommonResponse deleteStudent(@PathVariable("id") String id,HttpServletResponse httpServletResponse) throws SQLException {
         logger.info("we are at delete all student Controller");
 
@@ -147,6 +153,7 @@ public class StudentController {
      * @throws SQLException
      */
     @PutMapping("/update")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_STUDENT')")
     public CommonResponse updateStudent(@RequestBody Student studentDetail,HttpServletResponse httpServletResponse ) throws SQLException {
         logger.info("we are at update student Controller");
 

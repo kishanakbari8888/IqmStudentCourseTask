@@ -37,11 +37,10 @@ public class AuthController {
     @PostMapping("/login")
     public Map<String,Object> login(@RequestBody Map<String,Object> request) {
 
-        String email = (String) request.get("email");
+        String email = (String) request.get("username");
         String password = (String) request.get("password");
 
         this.doAuthenticate(email,password);
-
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         String token = this.jwtHelper.generateToken(userDetails);
@@ -58,7 +57,7 @@ public class AuthController {
         try {
             manager.authenticate(authentication);
         } catch (BadCredentialsException e) {
-            throw new BadCredentialsException(" Invalid Username or Password  !!");
+            throw new BadCredentialsException("Invalid Username or Password  !!");
         }
 
     }
