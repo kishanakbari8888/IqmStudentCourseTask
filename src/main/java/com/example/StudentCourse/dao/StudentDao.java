@@ -4,15 +4,23 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 
 import com.example.StudentCourse.entities.Student;
+import com.example.StudentCourse.entities.subentites.Address;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * this class handle database query execution for student table
@@ -20,35 +28,47 @@ import com.example.StudentCourse.entities.Student;
 @Repository
 public class StudentDao {
 
-
     private final Connection connection;
-    public StudentDao(final Connection connection){
+    @Autowired
+    @Qualifier("PostgresConnection")
+    JdbcTemplate jdbcTemplate;
+    private static Logger logger = (Logger) LoggerFactory.getLogger(StudentDao.class);
+
+
+    public StudentDao(final Connection connection) {
         this.connection = connection;
     }
 
-    public void save(Student student) throws SQLException {
+    public void save(Student student) throws SQLException, JsonProcessingException {
+        logger.info("we are saving student to database");
+
         String id = student.getId();
         String mobileNo = student.getMobileNo();
         String description = student.getDescription();
         Integer department = student.getDepartmentId();
+        Address address = student.getAddress();
 
-        String sql = "INSERT INTO student_info (id,mobile_No,description,department) VALUES (?, ?,?,?)";
+        ObjectMapper obj = new ObjectMapper();
+        String jsonAddress = obj.writeValueAsString(address);
 
-        try {
+        String sql = "INSERT INTO student_info (id,mobile_No,description,department,address) VALUES (?,?, ?,?,cast(? as json))";
+
+        jdbcTemplate.update(connection -> {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
             preparedStatement.setString(1, id);
             preparedStatement.setString(2, mobileNo);
-            preparedStatement.setString(3,description);
-            preparedStatement.setInt(4,department);
+            preparedStatement.setString(3, description);
+            preparedStatement.setInt(4, department);
+            preparedStatement.setString(5, jsonAddress);
+            return preparedStatement;
+        });
 
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw e;
-        }
+        logger.info("successfully sava data into database");
     }
 
-    public void saveForUpdate(Student student) throws SQLException{
+    public void saveForUpdate(Student student) throws SQLException {
+        logger.info("we are updating student to database" + student.getId());
 
         String id = student.getId();
         String mobileNo = student.getMobileNo();
@@ -59,42 +79,44 @@ public class StudentDao {
                 "SET mobile_No = ?, description = ?,department = ? " +
                 "WHERE id = ?;";
 
-        try {
+        jdbcTemplate.update(connection -> {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
             preparedStatement.setString(1, mobileNo);
-            preparedStatement.setString(2,description);
-            preparedStatement.setInt(3,department);
-            preparedStatement.setString(4,id);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw e;
-        }
+            preparedStatement.setString(2, description);
+            preparedStatement.setInt(3, department);
+            preparedStatement.setString(4, id);
+            return preparedStatement;
+        });
+        logger.info("successfully update data into database");
     }
 
-    public void deleteById(String studentId) throws SQLException{
+    public void deleteById(String studentId) throws SQLException {
+        logger.info("we are deleting student to database" + studentId);
         String id = studentId;
         String sql = "delete from student_info where id = ?;";
 
-        try {
+        jdbcTemplate.update(connection -> {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, id);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw e;
-        }
-
+            return preparedStatement;
+        });
+        logger.info("successfully deleting data into database");
     }
 
-    public Student findById(String studentId) throws SQLException{
+    public Student findById(String studentId) throws SQLException {
+        logger.info("we are finding User by id course to database");
+
         String id = studentId;
         String sql = "SELECT *FROM student_info WHERE id = ?;";
-        Student student = null;
 
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1,id);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+        return jdbcTemplate.query(sql, new PreparedStatementSetter() {
+                @Override
+                public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                    preparedStatement.setString(1, id);
+                }
+            }, (resultSet) -> {
+                Student student = null;
                 if (resultSet.next()) {
                     student = new Student();
                     student.setId(resultSet.getString("id"));
@@ -102,65 +124,57 @@ public class StudentDao {
                     student.setDescription(resultSet.getString("description"));
                     student.setDepartmentId(resultSet.getInt("department"));
                 }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return student;
-
+            return student;
+        });
 
     }
 
-    public List<Map<String,Object>> findAll(Long pageNo, Long size, String field, String patten) throws SQLException{
-        Long offSet = 0L;
-        offSet = pageNo*size;
+    public List<Map<String, Object>> findAll(Long pageNo, Long size, String field, final String patten) throws SQLException {
+        logger.info("we are find all student to database");
 
+        final Long offSet = pageNo * size;
         String sql = "select si.id,si.description,si.mobile_no,si.department,sum(ci.fee) as fee from student_info si inner join studentcourse s on si.id = s.studentid inner join course_info ci on s.courseid=ci.id group by si.id,si.description,si.mobile_no\n" +
                 "\n" +
                 "\n ORDER BY ? LIMIT ? OFFSET ?";
 
-        if(patten!=null){
+        if (patten != null) {
             sql = "select si.id,si.description,si.mobile_no,si.department,sum(ci.fee) as fee from student_info si inner join studentcourse s on si.id = s.studentid inner join course_info ci on s.courseid=ci.id group by si.id,si.description,si.mobile_no\n" +
                     "\n" +
                     "\n WHERE id LIKE ? OR mobile_no LIKE ? OR description LIKE ? ORDER BY ? LIMIT ? OFFSET ?";
         }
 
-        List<Map<String,Object>> studentList = new LinkedList<>();
+        return jdbcTemplate.query(sql, new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                if (patten == null) {
+                    preparedStatement.setString(1, field);
+                    preparedStatement.setLong(2, size);
+                    preparedStatement.setLong(3, offSet);
+                } else {
 
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-            if(patten==null){
-                preparedStatement.setString(1,field);
-                preparedStatement.setLong(2,size);
-                preparedStatement.setLong(3,offSet);
+                    String isPatten = "%" + patten + "%";
+                    preparedStatement.setString(1, isPatten);
+                    preparedStatement.setString(2, isPatten);
+                    preparedStatement.setString(3, isPatten);
+                    preparedStatement.setString(4, field);
+                    preparedStatement.setLong(5, size);
+                    preparedStatement.setLong(6, offSet);
+                }
             }
-            else{
-
-                patten = "%"+patten+"%";
-                preparedStatement.setString(1,patten);
-                preparedStatement.setString(2,patten);
-                preparedStatement.setString(3,patten);
-                preparedStatement.setString(4,field);
-                preparedStatement.setLong(5,size);
-                preparedStatement.setLong(6,offSet);
-            }
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()) {
-                Map<String,Object> student = new HashMap<>();
-                student.put("id",resultSet.getString("id"));
-                student.put("mobile No",resultSet.getString("mobile_No"));
-                student.put("description",resultSet.getString("description"));
-                student.put("department",resultSet.getInt("department"));
-                student.put("fee",resultSet.getInt("fee"));
+        }, (resultSet) -> {
+            List<Map<String, Object>> studentList = new LinkedList<>();
+            while (resultSet.next()) {
+                Map<String, Object> student = new HashMap<>();
+                student.put("id", resultSet.getString("id"));
+                student.put("mobile No", resultSet.getString("mobile_No"));
+                student.put("description", resultSet.getString("description"));
+                student.put("department", resultSet.getInt("department"));
+                student.put("fee", resultSet.getInt("fee"));
                 studentList.add(student);
             }
 
-        } catch (SQLException e) {
-            throw e;
-        }
-        return studentList;
+            return studentList;
+        });
 
     }
 

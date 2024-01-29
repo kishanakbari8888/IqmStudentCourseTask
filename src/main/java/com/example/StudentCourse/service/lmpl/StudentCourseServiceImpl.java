@@ -2,7 +2,8 @@ package com.example.StudentCourse.service.lmpl;
 
 import java.sql.SQLException;
 import java.util.List;
-
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,8 @@ public class StudentCourseServiceImpl implements StudentCourseService {
 
     @Autowired
     private StudentCourseDao studentCourseDao;
+    private static Logger logger = (Logger) LoggerFactory.getLogger(StudentCourse.class);
+
 
     /**
      * add student with corresponding course
@@ -41,7 +44,9 @@ public class StudentCourseServiceImpl implements StudentCourseService {
     @Override
     public List<Course> getAllCourseByStudentId(String studentId) {
         try {
-            return studentCourseDao.getAllCourseByStudentId(studentId);
+            List<Course> getAllCourseBystu =  studentCourseDao.getAllCourseByStudentId(studentId);
+            logger.info("Successfully get all course by id");
+            return getAllCourseBystu;
         } catch (SQLException e) {
             return null;
         }

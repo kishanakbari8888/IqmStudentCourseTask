@@ -3,6 +3,8 @@ package com.example.StudentCourse.service.lmpl;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,8 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private CourseDao courseDao;
+    private static Logger logger = (Logger) LoggerFactory.getLogger(CourseServiceImpl.class);
+
 
     /**
      * Add course detail to postgres database
@@ -62,7 +66,9 @@ public class CourseServiceImpl implements CourseService {
      */
     @Override
     public Course getCourse(String courseId) throws SQLException {
-        return courseDao.findById(courseId);
+        Course course =  courseDao.findById(courseId);
+        logger.info("Course details fetch successfully from database");
+        return course;
     }
 
     /**
@@ -74,19 +80,23 @@ public class CourseServiceImpl implements CourseService {
     public List<Course> getallCourse(Long pageNo,Long size,String field,String patten) throws SQLException {
 
         if(pageNo<0){
+            logger.info("Page No field not proper");
             throw new ParameterException("value cann't be less than zero","page No");
         }
 
         if(size<=0){
+            logger.info("size field not proper");
             throw new ParameterException("value cann't be less than zero","size");
         }
 
         if(patten!=null && (patten.contains("\"") || patten.contains("\'"))){
+            logger.info("patten field not proper");
             throw new SecurityException("search field","don't Enter special characters");
         }
 
-        return courseDao.findAll(pageNo,size,field,patten);
-
+        List<Course> listOfAllCourse = courseDao.findAll(pageNo,size,field,patten);
+        logger.info("list of course fetch successfully from database");
+        return listOfAllCourse;
     }
 
 }

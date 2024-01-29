@@ -4,16 +4,22 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.example.StudentCourse.dao.StudentDao;
 import com.example.StudentCourse.entities.Student;
+import com.example.StudentCourse.exceptions.ParameterException;
+import com.example.StudentCourse.exceptions.SecurityException;
+import com.example.StudentCourse.service.StudentCourseService;
 import com.example.StudentCourse.service.StudentService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Service
 public class StudentServiceImpl implements StudentService {
-
     private final StudentDao studentDao;
+    private static Logger logger = (Logger) LoggerFactory.getLogger(StudentCourseService.class);
 
     public StudentServiceImpl(StudentDao studentDao) {
         this.studentDao = studentDao;
@@ -26,7 +32,7 @@ public class StudentServiceImpl implements StudentService {
      * @throws SQLException
      */
     @Override
-    public String createStudent(Student studentdetail) throws SQLException {
+    public String createStudent(Student studentdetail) throws SQLException, JsonProcessingException {
         studentDao.save(studentdetail);
         return "success";
     }
@@ -63,7 +69,9 @@ public class StudentServiceImpl implements StudentService {
      */
     @Override
     public Student getStudent(String studentId) throws SQLException {
-        return studentDao.findById(studentId);
+        Student student = studentDao.findById(studentId);
+        logger.info("successfully fetch student data from database");
+        return student;
     }
 
     /**
@@ -74,11 +82,26 @@ public class StudentServiceImpl implements StudentService {
      */
     @Override
     public List<Map<String, Object>> getallStudent(Long pageNo, Long size, String field, String patten) throws SQLException {
-        try {
-            return studentDao.findAll(pageNo, size, field, patten);
-        }catch (SQLException e){
-            throw e;
+
+        if(pageNo<0){
+            logger.info("Page No field not proper");
+            throw new ParameterException("value cann't be less than zero","page No");
         }
+
+        if(size<=0){
+            logger.info("size field not proper");
+            throw new ParameterException("value cann't be less than zero","size");
+        }
+
+        if(patten!=null && (patten.contains("\"") || patten.contains("\'"))){
+            logger.info("patten field not proper");
+            throw new SecurityException("search field","don't Enter special characters");
+        }
+
+
+        List<Map<String,Object>> studentList = studentDao.findAll(pageNo, size, field, patten);
+        logger.info("list of student fetch successfully from database");
+        return studentList;
     }
 
 }
