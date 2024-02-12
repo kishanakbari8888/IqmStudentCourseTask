@@ -45,7 +45,6 @@ public class PasswordEncodeTest {
             build();
         System.out.println(userDetails.getPassword());
     }
-
     @Test
     public void checkJwtHelper(){
         String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJraXNoYW4uYUBpcW0uY29tIiwiaWF0IjoxNzA3NTgzOTE3LCJleHAiOjE3MTYyMjM5MTd9.DpPbPcJ509eAbk6jHHrR7ApZR7QsMC5epmU0RegJgbcYbUC8DsB0FM_9CXxRRM20D7hlcmLyaGqkotzX2nbgdQ";;
