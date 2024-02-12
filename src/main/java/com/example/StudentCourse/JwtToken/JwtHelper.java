@@ -4,25 +4,17 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-import io.jsonwebtoken.*;
-
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.filter.OncePerRequestFilter;
-
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 
 @Service
 public class JwtHelper {
-    final String secretKey = "jrfujfnnvjkfdnvfjvfdvnfjvnfjdvdfvfdvfdv";
+    final String secretKey = "qXNWVFZkgaX02uP1XSARmU1MeEBNqxbDuiSQJCpjnK15DgPeqcST8cPGkiiAi3UFp83PM191amunvANgYXZa33Zmnqb7F0Yvqfy8";
     private final long ExpirationTime = 100*60*60*24;
 
     public String generateToken(Map<String, Object> claims, String subject){
